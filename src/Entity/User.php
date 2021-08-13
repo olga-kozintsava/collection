@@ -4,16 +4,28 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
 class User
 {
+//    /**
+//     * @param string $name
+//     * @param string $email
+//     * @param string $password
+//     */
+//    public function __construct(string $name, string $email, string $password){
+//        $this->id = (string) Uuid::v4();
+//        $this->name = $name;
+//        $this->email = $email;
+//        $this->password = $password;
+//    }
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\Column(type="guid")
      */
     private $id;
 
@@ -31,6 +43,8 @@ class User
      * @ORM\Column(type="string", length=255)
      */
     private $password;
+
+
 
     /**
      * @ORM\Column(type="json")

@@ -4,11 +4,30 @@ namespace App\Service\User;
 
 use App\DTO\User\UserRegistrationData;
 use App\Entity\User;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
 class UserCreator
 {
-public function create(UserRegistrationData $data): User
+private PasswordHasherInterface $passwordHasher;
+public function __construct(PasswordHasherFactoryInterface $hasherFactory)
 {
-   return new User($data->name, $data->email, $data->password);
+    $this->passwordHasher = $hasherFactory->getPasswordHasher(User::class);
 }
+
+    public function create(UserRegistrationData $data): User
+    {
+        $encodedPassword = $this->passwordHasher->hash($data->password);
+        return new User($data->name, $data->email, $encodedPassword);
+    }
 }
+
+
+
+
+
+
+
+
+
+

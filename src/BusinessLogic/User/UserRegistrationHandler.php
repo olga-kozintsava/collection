@@ -29,6 +29,10 @@ class UserRegistrationHandler
 
     public function handle(UserRegistrationData $data): User
     {
+//        $userEmail = $this->entityManager->getRepository(User::class)->findBy(['email'=>$data->email]);
+//        if ($userEmail ){
+//            // get exception
+//        }
 
         $violationList = $this->validator->validate($data);
         if ($violationList->count() > 0) {

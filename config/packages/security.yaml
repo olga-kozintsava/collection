@@ -24,7 +24,11 @@ security:
                 login_path: form_login
                 check_path: form_login
                 enable_csrf: true
-            switch_user: { role: ROLE_ADMIN}
+            logout:
+                path: logout
+
+
+#            switch_user: { role: ROLE_ADMIN}
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

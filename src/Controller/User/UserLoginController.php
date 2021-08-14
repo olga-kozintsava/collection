@@ -25,4 +25,12 @@ class UserLoginController extends AbstractController
         return $this->render('user/form_login.html.twig',
             ['last_username' => $lastUsername, 'error' => $error]);
     }
+
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logout()
+    {
+        throw new \Exception('Will be intercepted before getting here');
+    }
 }

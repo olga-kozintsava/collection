@@ -3,23 +3,34 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Service\User\UserCreator;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserCrudController extends AbstractCrudController
 {
+
+    public function __construct(private UserCreator $userCreator){
+
+    }
     public static function getEntityFqcn(): string
     {
         return User::class;
     }
 
-    /*
-    public function configureFields(string $pageName): iterable
+    public function createEntity(string $entityFqcn)
     {
-        return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
+//        $this->userCreator->create();
     }
-    */
+
+//    public function configureFields(string $pageName): iterable
+//    {
+//        return [
+//            TextField::new('name'),
+//            TextField::new('email'),
+//
+//        ];
+//    }
+
 }

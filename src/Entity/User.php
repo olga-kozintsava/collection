@@ -7,33 +7,34 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 ///**
-// * @ORM\Entity(repositoryClass=UserRepository::class)
+// * @ORM\Entity()
 // *
 // */
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  *
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @param string $name
-     * @param string $email
-     * @param string $password
-     */
-    public function __construct(string $name, string $email, string $password){
-
-        $this->name = $name;
-        $this->email = $email;
-        $this->password = $password;
-    }
+//    /**
+//     * @param string $name
+//     * @param string $email
+//     * @param string $password
+//     */
+//    public function __construct(string $name, string $email, string $password){
+//
+//        $this->name = $name;
+//        $this->email = $email;
+//        $this->password = $password;
+//    }
 
     private const ROLE_USER = 'ROLE_USER';
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -44,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $name;
 
     /**
-     * @ORM\Column(type="string", unique=true, length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
 
@@ -70,52 +71,56 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->name;
     }
 
-//    public function setName(string $name): self
-//    {
-//        $this->name = $name;
-//
-//        return $this;
-//    }
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
 
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-//    public function setEmail(string $email): self
-//    {
-//        $this->email = $email;
-//
-//        return $this;
-//    }
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
 
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
-//    public function setPassword(string $password): self
-//    {
-//        $this->password = $password;
-//
-//        return $this;
-//    }
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
 
     public function getRole(): array
     {
-
+        return [self::ROLE_USER];
     }
 
-//    public function setRole(array $role): self
-//    {
-//        $this->role = $role;
-//
-//        return $this;
-//    }
+    public function setRole(array $role): self
+    {
+        $this->role = $role;
+
+        return $this;
+    }
 
     public function getRoles()
     {
-        return [self::ROLE_USER];
+        $roles = $this->role;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+//        return [self::ROLE_USER];
     }
 
     public function getSalt()

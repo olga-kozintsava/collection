@@ -146,4 +146,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->id;
     }
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="github_id", type="string", length=255, nullable=true, options={"default"="NULL"})
+     */
+    private $githubId;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="github_access_token", type="string", length=255, nullable=true, options={"default"="NULL"})
+     */
+    private $githubAccessToken;
 }

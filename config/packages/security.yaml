@@ -24,6 +24,7 @@ security:
                 login_path: form_login
                 check_path: form_login
                 enable_csrf: true
+                default_target_path: home
             logout:
                 path: logout
 

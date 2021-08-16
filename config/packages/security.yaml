@@ -27,7 +27,7 @@ security:
                 default_target_path: home
             entry_point: form_login
             custom_authenticators:
-                - App\Security\MyFacebookAuthenticator
+                - App\Security\OAuthGoogleAuthenticator
             logout:
                 path: logout
 

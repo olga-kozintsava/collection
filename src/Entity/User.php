@@ -56,7 +56,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $password;
 
-
+    /**
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private ?string $githubClientId;
 
     /**
      * @ORM\Column(type="json")
@@ -100,6 +104,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+    public function getGithubClientId(): ?string
+    {
+        return $this->githubClientId;
+    }
+
+    public function setGithubClientId(string $githubClientId): self
+    {
+        $this->githubClientId = $githubClientId;
 
         return $this;
     }
@@ -149,17 +164,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
-//    /**
-//     * @var string|null
-//     *
-//     * @ORM\Column(name="github_id", type="string", length=255, nullable=true, options={"default"="NULL"})
-//     */
-//    private $githubId;
-//
-//    /**
-//     * @var string|null
-//     *
-//     * @ORM\Column(name="github_access_token", type="string", length=255, nullable=true, options={"default"="NULL"})
-//     */
-//    private $githubAccessToken;
 }

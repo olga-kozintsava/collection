@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class GoogleConfirm extends AbstractController
 {
     /**
-     * @Route("/googlee4b83ab533e20c57.html", name="home")
+     * @Route("/googlee4b83ab533e20c57.html")
      */
     public function index(): Response
     {

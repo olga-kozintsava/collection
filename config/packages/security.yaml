@@ -25,6 +25,9 @@ security:
                 check_path: form_login
                 enable_csrf: true
                 default_target_path: home
+            entry_point: form_login
+            custom_authenticators:
+                - App\Security\MyFacebookAuthenticator
             logout:
                 path: logout
 

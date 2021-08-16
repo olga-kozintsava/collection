@@ -16,6 +16,7 @@
         "knpuniversity/oauth2-client-bundle": "^2.8",
         "league/oauth2-facebook": "^2.0",
         "league/oauth2-github": "^3.0",
+        "league/oauth2-google": "^4.0",
         "league/oauth2-linkedin": "^5.1",
         "phpdocumentor/reflection-docblock": "^5.2",
         "sensio/framework-extra-bundle": "^6.1",

@@ -31,6 +31,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 //        $this->password = $password;
 //    }
 
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+
     private const ROLE_USER = 'ROLE_USER';
     /**
      * @ORM\Id

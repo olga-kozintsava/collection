@@ -5,168 +5,98 @@ declare(strict_types=1);
 namespace App\Security;
 
 use App\Entity\User;
+
+// your user entity
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use KnpU\OAuth2ClientBundle\Client\OAuth2Client;
-use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
-use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
-use League\OAuth2\Client\Provider\GoogleUser;
-use League\OAuth2\Client\Token\AccessToken;
+use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-class OAuthGoogleAuthenticator extends SocialAuthenticator
+class OAuthGoogleAuthenticator extends OAuth2Authenticator
 {
-    /**
-     * @var ClientRegistry
-     */
     private $clientRegistry;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private $entityManager;
+    private $router;
 
-    /**
-     * @param ClientRegistry $clientRegistry
-     * @param EntityManagerInterface $em
-     * @param UserRepository $userRepository
-     */
-    public function __construct(
-        ClientRegistry $clientRegistry,
-        EntityManagerInterface $em,
-        UserRepository $userRepository
-    )
+    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $entityManager, RouterInterface $router)
     {
         $this->clientRegistry = $clientRegistry;
-        $this->em = $em;
-        $this->userRepository = $userRepository;
+        $this->entityManager = $entityManager;
+        $this->router = $router;
     }
 
-    /**
-     * @param Request $request
-     * @param AuthenticationException|null $authException
-     *
-     * @return RedirectResponse|Response
-     */
-    public function start(Request $request, AuthenticationException $authException = null)
-    {
-        return new RedirectResponse(
-            '/connect/',
-            Response::HTTP_TEMPORARY_REDIRECT
-        );
-    }
 
-    /**
-     * @param Request $request
-     *
-     * @return bool
-     */
-    public function supports(Request $request): bool
+    public function supports(Request $request): ?bool
     {
         return $request->attributes->get('_route') === 'google_auth';
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return AccessToken|mixed
-     */
-    public function getCredentials(Request $request)
+    public function authenticate(Request $request): PassportInterface
     {
-        return $this->fetchAccessToken($this->getGoogleClient());
+        $client = $this->clientRegistry->getClient('google');
+        $accessToken = $this->fetchAccessToken($client);
+
+        return new SelfValidatingPassport(new UserBadge((string)$accessToken));
+//            new UserBadge((string)$accessToken, function () use ($accessToken, $client) {
+//
+//                $googleUser = $client->fetchUserFromToken($accessToken);
+//
+//                $email = $googleUser->getEmail();
+//
+//                // 1) have they logged in with Facebook before? Easy!
+//                $existingUser = $this->entityManager->getRepository(User::class)->findOneBy(['googleClientId' => $googleUser->getId()]);
+//
+//                if ($existingUser) {
+//                    return $existingUser;
+//                }
+//
+//                // 2) do we have a matching user by email?
+//                $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+//                if (!$user) {
+//                    $user = new User();
+//                    $user->setGoogleClientId($googleUser->getId());
+//                    $user->setEmail($email);
+//                    $user->setName($googleUser->getName());
+//                    $user->setPassword($googleUser->getPassword());
+//                    $this->entityManager->persist($user);
+//                    $this->entityManager->flush();
+//                }
+//                return $user;
+//            })
+//        );
     }
 
-    /**
-     * @param mixed $credentials
-     * @param UserProviderInterface $userProvider
-     *
-     * @return User|null|UserInterface
-     */
-    public function getUser($credentials, UserProviderInterface $userProvider)
+
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
-        /** @var GoogleUser $googleUser */
-        $googleUser = $this->getGoogleClient()
-            ->fetchUserFromToken($credentials);
+        // change "app_homepage" to some route in your app
+        $targetUrl = $this->router->generate('home');
 
-        $email = $googleUser->getEmail();
+        return new RedirectResponse($targetUrl);
 
-        /** @var User $existingUser */
-        $existingUser = $this->userRepository
-            ->findOneBy(['githubClientId' => $googleUser->getId()]);
-
-        if ($existingUser) {
-            return $existingUser;
-        }
-
-        /** @var User $user */
-        $user = $this->userRepository
-            ->findOneBy(['email' => $email]);
-
-        if (!$user) {
-            $user = new User();
-            $user->setGithubClientId($googleUser->getId());
-            $user->setEmail($email);
-            $user->setName( $googleUser->getName());
-            $this->em->persist($user);
-            $this->em->flush();
-        }
-
-        return $user;
+        // or, on success, let the request continue to be handled by the controller
+        //return null;
     }
 
-    /**
-     * @param Request $request
-     * @param AuthenticationException $exception
-     *
-     * @return null|Response|void
-     */
-    public function onAuthenticationFailure(
-        Request $request,
-        AuthenticationException $exception
-    ): ?Response
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
-        return null;
-    }
+        $message = strtr($exception->getMessageKey(), $exception->getMessageData());
 
-    /**
-     * @param Request $request
-     * @param TokenInterface $token
-     * @param string $providerKey
-     *
-     * @return null|Response
-     */
-    public function onAuthenticationSuccess(
-        Request $request,
-        TokenInterface $token,
-        $providerKey
-    ): ?Response
-    {
-        return null;
-    }
-
-    /**
-     * @return OAuth2ClientInterface
-     */
-    public function getGoogleClient(): OAuth2ClientInterface
-    {
-        return $this->clientRegistry->getClient('google');
-    }
-
-    /**
-     * @return bool
-     */
-    public function supportsRememberMe():bool
-    {
-        return true;
+        return new Response($message, Response::HTTP_FORBIDDEN);
     }
 }
+
+
+
+
+
+

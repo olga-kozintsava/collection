@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -60,12 +62,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *
      * @ORM\Column(type="string", nullable=true)
      */
-    private ?string $githubClientId;
+    private ?string $googleClientId;
 
     /**
      * @ORM\Column(type="json")
      */
     private $role = [];
+
+    /**
+     * @ORM\OneToMany(targetEntity=Category::class, mappedBy="user")
+     */
+    private $categories;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
+
+
 
     public function getId(): ?int
     {
@@ -107,14 +121,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    public function getGithubClientId(): ?string
+    public function getGoogleClientId(): ?string
     {
-        return $this->githubClientId;
+        return $this->googleClientId;
     }
 
-    public function setGithubClientId(string $githubClientId): self
+    public function setGoogleClientId(string $googleClientId): self
     {
-        $this->githubClientId = $githubClientId;
+        $this->googleClientId = $googleClientId;
 
         return $this;
     }
@@ -161,7 +175,43 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 //    }
     public function getUserIdentifier(): string
     {
-        return $this->id;
+        return $this->email;
     }
 
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    public function addCategory(Category $category): self
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            // set the owning side to null (unless already changed)
+            if ($category->getUser() === $this) {
+                $category->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
+
 }
+
+
+

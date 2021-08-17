@@ -32,14 +32,14 @@ class GoogleController extends AbstractController
     /**
      * @Route("/google/auth", name="google_auth")
      *
-     * @return JsonResponse|RedirectResponse
+     *
      */
-    public function connectGoogleCheck(): RedirectResponse|JsonResponse
+    public function connectGoogleCheck()
     {
-        if (!$this->getUser()) {
-            return new JsonResponse(['status' => false, 'message' => "User not found!"]);
-        } else {
-            return $this->redirectToRoute('form_login');
-        }
+//        if (!$this->getUser()) {
+//            return new JsonResponse(['status' => false, 'message' => "User not found!"]);
+//        } else {
+//            return $this->redirectToRoute('form_login');
+//        }
     }
 }

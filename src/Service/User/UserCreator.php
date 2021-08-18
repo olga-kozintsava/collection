@@ -20,7 +20,6 @@ public function __construct(PasswordHasherFactoryInterface $hasherFactory)
     public function create(UserRegistrationData $data): User
     {
         $encodedPassword = $this->passwordHasher->hash($data->password);
-//        return new User($data->name, $data->email, $encodedPassword);
         $user = new User();
         $user->setName($data->name);
         $user->setEmail($data->email);

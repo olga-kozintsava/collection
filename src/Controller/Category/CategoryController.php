@@ -79,4 +79,28 @@ class CategoryController extends AbstractController
        $category = $categoryDelete->delete($id);
        return $this->redirectToRoute('category_list');
    }
+
+    /**
+     * @Route("/category/{id}/edit", name="category_edit", methods={"GET", "POST"})
+     * @param Request $request
+     * @param int $id
+     * @param CategoryRepository $categoryRepository
+     * @return Response
+     */
+    public function edit(Request $request, int $id, CategoryRepository $categoryRepository): Response
+    {
+        $category = $categoryRepository->findOneById($id);
+
+        $form = $this->createForm(AddCategoryType::class,$category);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $this->redirectToRoute('category_list');
+        }
+
+        return $this->renderForm('category/edit.html.twig', [
+            'form' => $form,
+        ]);
+    }
 }

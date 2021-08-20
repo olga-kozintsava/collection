@@ -8,6 +8,7 @@ namespace App\Controller\Category;
 use App\Entity\Category;
 use App\Form\Type\Category\AddCategoryType;
 use App\Repository\CategoryRepository;
+use App\Repository\ItemRepository;
 use App\Service\Category\CategoryCreator;
 use App\Service\Category\CategoryDelete;
 use phpDocumentor\Reflection\Types\Integer;
@@ -61,11 +62,15 @@ class CategoryController extends AbstractController
      * @param CategoryRepository $categoryRepository
      * @return Response
      */
-    public function  show(int $id, CategoryRepository $categoryRepository): Response
+    public function  show(int $id, CategoryRepository $categoryRepository, ItemRepository $itemRepository): Response
     {
         $category = $categoryRepository->findOneById($id);
+        $items = $itemRepository->findByCategory($category);
 
-        return $this->render('category/show.html.twig', ['category' => $category]);
+        return $this->render('category/show.html.twig', [
+            'category' => $category,
+            'items' => $items
+            ]);
     }
 
    /**

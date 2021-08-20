@@ -1,3 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block title %}Collection list{% endblock %}
+{% block body %}
 {{ category.title }}
-{{ category.id }}
 <a href="{{ path('item_add',{'id':category.id}) }}" class="btn btn-dark">Add item</a>
+<div class="container">
+    <div class="row" style="margin-top:50px">
+        <div class="col">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th scope="col">title</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td> {{ item.title }}</td>
+{#                    <td><a href="{{ path('category_show',{'id':category.id}) }}" class="btn btn-dark">Show</a>#}
+{#                        <a href="{{ path('category_edit',{'id':category.id}) }}" class="btn btn-outline-dark">Edit</a>#}
+{#                        <a href="{{ path('category_delete',{'id':category.id}) }}"#}
+{#                           class="btn btn-danger">Delete</a></td>#}
+                </tr>
+                {% else %}
+                    <div>No items</div>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+                {% endblock %}

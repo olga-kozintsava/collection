@@ -30,7 +30,7 @@ class CategoryController extends AbstractController
     public function add(Request $request, CategoryCreator $categoryCreator): Response
     {
         $category = new Category();
-        $user =  $this->getUser();
+        $user = $this->getUser();
         $form = $this->createForm(AddCategoryType::class, $category);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -47,14 +47,14 @@ class CategoryController extends AbstractController
      * @param CategoryRepository $categoryRepository
      * @return Response
      */
-   public function  showList(CategoryRepository $categoryRepository): Response
-   {
-       $id =  $this->getUser()->getId();
-       $category = $categoryRepository
-           ->findByUserId($id);
+    public function showList(CategoryRepository $categoryRepository): Response
+    {
+        $id = $this->getUser()->getId();
+        $category = $categoryRepository
+            ->findByUserId($id);
 
-       return $this->render('category/list.html.twig', ['categoryList' => $category]);
-   }
+        return $this->render('category/list.html.twig', ['categoryList' => $category]);
+    }
 
     /**
      * @Route("/category/{id}", name="category_show", methods={"GET"})
@@ -62,7 +62,7 @@ class CategoryController extends AbstractController
      * @param CategoryRepository $categoryRepository
      * @return Response
      */
-    public function  show(int $id, CategoryRepository $categoryRepository, ItemRepository $itemRepository): Response
+    public function show(int $id, CategoryRepository $categoryRepository, ItemRepository $itemRepository): Response
     {
         $category = $categoryRepository->findOneById($id);
         $items = $itemRepository->findByCategory($category);
@@ -70,20 +70,20 @@ class CategoryController extends AbstractController
         return $this->render('category/show.html.twig', [
             'category' => $category,
             'items' => $items
-            ]);
+        ]);
     }
 
-   /**
- * @Route("/category/{id}/delete", name="category_delete")
- * @param int $id
- * @param CategoryDelete $categoryDelete
- * @return Response
- */
-   public function delete(int $id, CategoryDelete $categoryDelete): Response
-   {
-       $categoryDelete->delete($id);
-       return $this->redirectToRoute('category_list');
-   }
+    /**
+     * @Route("/category/{id}/delete", name="category_delete")
+     * @param int $id
+     * @param CategoryDelete $categoryDelete
+     * @return Response
+     */
+    public function delete(int $id, CategoryDelete $categoryDelete): Response
+    {
+        $categoryDelete->delete($id);
+        return $this->redirectToRoute('category_list');
+    }
 
     /**
      * @Route("/category/{id}/edit", name="category_edit", methods={"GET", "POST"})
@@ -95,9 +95,9 @@ class CategoryController extends AbstractController
     public function edit(Request $request, int $id, CategoryRepository $categoryRepository): Response
     {
         $category = $categoryRepository->findOneById($id);
-        $form = $this->createForm(AddCategoryType::class,$category);
+        $form = $this->createForm(AddCategoryType::class, $category);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('category_list');
         }

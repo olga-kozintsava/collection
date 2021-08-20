@@ -11,6 +11,7 @@ use App\Form\Type\Category\AddCategoryType;
 use App\Form\Type\Item\ItemType;
 use App\Service\Category\CategoryCreator;
 use App\Service\Item\ItemCreator;
+use App\Service\Item\ItemDelete;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,4 +40,18 @@ class ItemController extends AbstractController
         return $this->renderForm('item/add.html.twig', [
             'form' => $form
         ]);
-    }}
+    }
+    /**
+     * @Route("{category_id}/item/delete/{id}", name="item_delete")
+     * @param int $category_id
+     * @param int $id
+     * @param ItemDelete $itemDelete
+     * @return Response
+     */
+    public function delete(int $category_id, int $id, ItemDelete $itemDelete): Response
+    {
+        $itemDelete->delete($id);
+        return $this->redirectToRoute('category_show', ['id'=>$category_id]);
+    }
+
+}

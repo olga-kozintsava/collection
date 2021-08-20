@@ -35,15 +35,14 @@ class ItemRepository extends ServiceEntityRepository
     }
 
 
-    /*
-    public function findOneBySomeField($value): ?Item
+    public function findOneById($value): ?Item
     {
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
+            ->andWhere('i.id = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
-    */
+
 }

@@ -5,6 +5,9 @@ namespace App\Entity;
 use App\Repository\ItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 /**
  * @ORM\Entity(repositoryClass=ItemRepository::class)
  */
@@ -26,7 +29,7 @@ class Item
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private array $tag = [];
+    private  $tag ;
 
     /**
      * @ORM\Column(type="datetime")
@@ -115,6 +118,11 @@ class Item
      */
     private $bool3;
 
+    public function __construct()
+    {
+        $this->tag = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -132,7 +140,7 @@ class Item
         return $this;
     }
 
-    public function getTag(): ?array
+    public function getTag(): Collection
     {
         return $this->tag;
     }

@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Controller\Category;
+namespace App\Controller\Item;
 
 use App\Entity\Category;
 use App\Entity\Item;
+use App\Entity\Tag;
 use App\Form\Type\Category\AddCategoryType;
 use App\Form\Type\Item\ItemType;
 use App\Service\Category\CategoryCreator;
+use App\Service\Item\ItemCreator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,23 +20,23 @@ class ItemController extends AbstractController
 {
 
     /**
-     * @Route("/item/add", name="item_add", methods={"GET", "POST"})
+     * @Route("/{id}/item/add", name="item_add", methods={"GET", "POST"})
      *
      * @param Request $request
-     * @param CategoryCreator $categoryCreator
+     * @param int $id
+     * @param ItemCreator $itemCreator
      * @return Response
      */
-    public function add(Request $request, CategoryCreator $categoryCreator): Response
+    public function add(Request $request,int $id, ItemCreator $itemCreator): Response
     {
-        $category = new Item();
-        $user =  $this->getUser();
-        $form = $this->createForm(ItemType::class, $category);
+        $item = new Item();
+        $form = $this->createForm(ItemType::class, $item);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-//            $categoryCreator->create($form, $user);
-            return $this->redirectToRoute('category_show');
+            $itemCreator->create($form, $id);
+          return $this->redirectToRoute('category_show', ['id'=>$id]);
         }
         return $this->renderForm('item/add.html.twig', [
-            'form' => $form,
+            'form' => $form
         ]);
     }}

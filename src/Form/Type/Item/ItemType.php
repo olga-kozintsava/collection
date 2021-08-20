@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Item;
 
+use App\Form\Type\Category\AddCategoryType;
 use App\Entity\Item;
+use App\Form\Type\Tag\TagType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -25,18 +27,25 @@ class ItemType extends AbstractType
         $builder
             ->add('title', TextType::class, ['attr' =>
                 ['class' => 'form-control']])
-            ->add('tag',  CollectionType::class, [
+//            ->add('tag', CollectionType::class, [
+//                'required' => false,
+//                'attr' => ['class' => 'form-control']])
+            ->add('tag', CollectionType::class, [
+                'entry_type' => TagType::class,
                 'required' => false,
-                'attr' => ['class' => 'form-control']])
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+            ])
             ->add('add', SubmitType::class, [
                 'label' => 'Add',
                 'attr' => ['class' => 'btn btn-block btn-dark']
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver):void
     {
         $resolver->setDefaults([
             'data_class' => Item::class,
         ]);
-    }}
+    }
+}

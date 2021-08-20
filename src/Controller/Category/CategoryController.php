@@ -76,7 +76,7 @@ class CategoryController extends AbstractController
  */
    public function delete(int $id, CategoryDelete $categoryDelete): Response
    {
-       $category = $categoryDelete->delete($id);
+       $categoryDelete->delete($id);
        return $this->redirectToRoute('category_list');
    }
 
@@ -90,12 +90,10 @@ class CategoryController extends AbstractController
     public function edit(Request $request, int $id, CategoryRepository $categoryRepository): Response
     {
         $category = $categoryRepository->findOneById($id);
-
         $form = $this->createForm(AddCategoryType::class,$category);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
+            $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('category_list');
         }
 

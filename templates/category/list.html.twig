@@ -1,57 +1,44 @@
 {% extends 'base.html.twig' %}
-{% block title %}Edit{% endblock %}
- {% block javascripts %}
-{#     <script>#}
-{#         $(document).on('click', '#block', function (){#}
-{#             $.post(url, {id: checkedUsers}, function (response) {#}
-{#                 if (response.code === 200) {#}
-{#                     location.reload()#}
-{#                 } else {#}
-{#                     console.log('error')#}
-{#                 }#}
-{#             }, 'json');#}
-{#         })#}
-{#     </script>#}
- {% endblock %}
+{% block title %}Collection list{% endblock %}
 {% block body %}
-<div class="container">
-    <div class="row" style="margin-top:50px">
-        <div class="col">
-{#            <div> {{ categoryList.user }} collections</div>#}
-            <a href="{{ path('category_new')}}">Add new collection</a>
-            <table class="table" id="users-table">
-                <thead>
-                <tr>
-{#                    <th><input type="checkbox" name="main-checkbox"></th>#}
-                    <th scope="col">title</th>
-                    <th scope="col">description</th>
-                    <th scope="col">subject</th>
-                    <th scope="col">image</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-
-                {% for category in categoryList %}
-                <tr>
-{#                    <th><input type="checkbox" name="checkbox" value={{$user->id}} ></th>#}
-                    <th>{{category.title}}</th>
-{#                    <a href="{{ path('blog_post', {slug: post.slug}) }}">{{ post.title }}</a>#}
-                    <td>{{category.description}}</td>
-                    <td>{{category.subject}}</td>
-                    <td>{{category.image}}</td>
-
-                    <td><a href="{{ path('category_show',{'id':category.id})}}"  class="btn btn-dark">Show</a>
-                   <a href="{{ path('category_edit',{'id':category.id})}}" class="btn btn-outline-dark">Edit</a>
-                    <a href="{{ path('category_delete',{'id':category.id})}}" class="btn btn-danger">Delete</a></td>
-
-
-
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+    <div class="container">
+        <div class="row" style="margin-top:50px">
+            <div class="col">
+                <a href="{{ path('category_new') }}">Add new collection</a>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th scope="col">title</th>
+                        <th scope="col">description</th>
+                        <th scope="col">subject</th>
+                        <th scope="col">image</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for category in categoryList %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ category.title }}</td>
+                            <td>{{ category.description }}</td>
+                            <td>{{ category.subject }}</td>
+                            <td>{{ category.image }}</td>
+{#                            {{ form_start(form, {'action': path('target_route'), 'method': 'GET'}) }}#}
+                            <td><a href="{{ path('category_show',{'id':category.id}) }}" class="btn btn-dark">Show</a>
+                                <a href="{{ path('category_edit',{'id':category.id}) }}" class="btn btn-outline-dark">Edit</a>
+                                <a href="{{ path('category_delete',{'id':category.id}) }}"
+                                   class="btn btn-danger">Delete</a></td>
+                        </tr>
+                    {% else %}
+                        <div>No collection</div>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
+
 {% endblock %}
+
+

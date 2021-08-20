@@ -1,0 +1,30 @@
+{% for category in categoryList %}
+    <tr>
+    {% if loop.first %}
+        <tr class="firstСlass">
+    {% endif %}
+    {% if loop.index is not odd %}
+        <tr class="evenClass">
+    {% endif %}
+    <td>{{ loop.index }}</td>
+    <td>{{ category.title }}</td>
+    <td>{{ category.description }}</td>
+    <td>{{ category.subject }}</td>
+    <td>{{ category.image }}</td>
+    <td>{{ category.date|date("m/d/Y") }}</td>
+    <td><a href="{{ path('category_show',{'id':category.id}) }}" class="btn btn-dark">Show</a>
+        <a href="{{ path('category_edit',{'id':category.id}) }}" class="btn btn-outline-dark">Edit</a>
+        <a href="{{ path('category_delete',{'id':category.id}) }}"
+           class="btn btn-danger">Delete</a></td>
+    </tr>
+{% else %}
+    <div>No collection</div>
+{% endfor %}
+<style>
+    .firstСlass {
+        color: red;
+    }
+    .evenClass {
+        background: grey;
+    }
+</style>

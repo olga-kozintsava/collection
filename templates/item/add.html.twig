@@ -7,21 +7,17 @@
         <div class="row d-flex justify-content-center" style="margin: 50px">
             <div class="col-md-6 col-md-offset-6 ">
                 <div class="add_category">
-                    {{ form_start(form, { 'action': path('category_new'), 'method': 'POST'})}}
+                    {{ form_start(form, { 'action': path('item_add'), 'method': 'POST'})}}
 
                     <div>{{ form_label(form.title) }}
                         {{ form_widget(form.title) }}
                         {{ form_errors(form.title) }}
                     </div>
-                    <div>  {{ form_label(form.description) }}
-                        {{ form_widget(form.description) }}
-                        {{ form_errors(form.description) }}
+                    <div>  {{ form_label(form.tag) }}
+                        {{ form_widget(form.tag) }}
+                        {{ form_errors(form.tag) }}
                     </div>
 
-                    <div> {{ form_label(form.subject) }}
-                        {{ form_widget(form.subject) }}
-                        {{ form_errors(form.subject) }}
-                    </div>
                     <div>
                         {{ form_widget(form.add ) }}
                     </div>

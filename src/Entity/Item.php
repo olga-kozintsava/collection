@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ItemRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=ItemRepository::class)
  */
@@ -19,13 +19,14 @@ class Item
 
     /**
      * @ORM\Column(type="string", length=191)
+     * @Assert\NotBlank
      */
     private $title;
 
     /**
      * @ORM\Column(type="array", nullable=true)
      */
-    private $еtag = [];
+    private array $tag = [];
 
     /**
      * @ORM\Column(type="datetime")
@@ -80,6 +81,7 @@ class Item
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="items")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid
      */
     private $category;
 
@@ -130,14 +132,14 @@ class Item
         return $this;
     }
 
-    public function getеtag(): ?array
+    public function getTag(): ?array
     {
-        return $this->еtag;
+        return $this->tag;
     }
 
-    public function setеtag(?array $еtag): self
+    public function setTag(?array $tag): self
     {
-        $this->еtag = $еtag;
+        $this->tag = $tag;
 
         return $this;
     }

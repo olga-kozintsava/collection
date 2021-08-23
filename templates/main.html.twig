@@ -1,7 +1,25 @@
 {% extends 'base.html.twig' %}
-{% block title %}Log in!{% endblock %}
+{% block title %}Main{% endblock %}
 
 {% block body %}
-<h1>fff</h1>
-{{ last_user }}
+
+
+        <h3>Last added items</h3>
+    {% for item in lastItems %}
+        <div>
+        {{ item }}
+        </div>
+        {% else %}
+        <div>
+            <h3>No items</h3>
+        </div>
+{% endfor%}
+<h3>Collections with the largest number of items</h3>
+    {% for category in maxItemCategory %}
+        <div><a href="{{ path('category_show',{'id':category.id}) }}" {{ category.title }} </a>{{ category.ItemCount }}</div>
+    {% else %}
+        <div>
+            <h3>No collections</h3>
+        </div>
+    {% endfor%}
 {% endblock %}

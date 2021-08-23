@@ -18,12 +18,12 @@
 {#                        {{ form_errors(form.tag) }}#}
 {#                    </div>#}
 
-                   <div> <ul class="tags">
-                        {% for tag in form.tag %}
-                            <li>{{ form_row(tag.name) }}</li>
-                        {% endfor %}
-                    </ul>
-                   </div>
+{#                   <div> <ul class="tags">#}
+{#                        {% for tag in form.tag %}#}
+{#                            <li>{{ form_row(tag.name) }}</li>#}
+{#                        {% endfor %}#}
+{#                    </ul>#}
+
                     <div>
                         {{ form_widget(form.add ) }}
                     </div>

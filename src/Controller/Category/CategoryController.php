@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Category;
 
-
 use App\Entity\Category;
 use App\Form\Type\Category\AddCategoryType;
 use App\Repository\CategoryRepository;
 use App\Repository\ItemRepository;
 use App\Service\Category\CategoryCreator;
 use App\Service\Category\CategoryDelete;
+use App\Service\CustomField\FieldCreator;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,17 +25,20 @@ class CategoryController extends AbstractController
      *
      * @param Request $request
      * @param CategoryCreator $categoryCreator
+     * @param FieldCreator $fieldCreator
      * @return Response
      */
-    public function add(Request $request, CategoryCreator $categoryCreator): Response
+    public function add(Request $request, CategoryCreator $categoryCreator, FieldCreator $fieldCreator): Response
     {
         $category = new Category();
         $user = $this->getUser();
         $form = $this->createForm(AddCategoryType::class, $category);
         $form->handleRequest($request);
+        $form->get('field')->getData();
         if ($form->isSubmitted() && $form->isValid()) {
-            $categoryCreator->create($form, $user);
-            return $this->redirectToRoute('category_list');
+            $category = $categoryCreator->create($form, $user);
+            $fieldCreator->create($form, $category);
+           return $this->redirectToRoute('category_list');
         }
         return $this->renderForm('category/add.html.twig', [
             'form' => $form,

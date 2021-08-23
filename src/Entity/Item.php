@@ -118,9 +118,19 @@ class Item
      */
     private $bool3;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=ItemCustomField::class, mappedBy="item")
+     */
+    private $itemCustomFields;
+
     public function __construct()
     {
         $this->tag = new ArrayCollection();
+        $this->itemCustomFields = new ArrayCollection();
+    }
+    public function __toString(): string
+    {
+         return $this->title;
     }
 
     public function getId(): ?int
@@ -352,6 +362,33 @@ class Item
     public function setBool3(?bool $bool3): self
     {
         $this->bool3 = $bool3;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ItemCustomField[]
+     */
+    public function getItemCustomFields(): Collection
+    {
+        return $this->itemCustomFields;
+    }
+
+    public function addItemCustomField(ItemCustomField $itemCustomField): self
+    {
+        if (!$this->itemCustomFields->contains($itemCustomField)) {
+            $this->itemCustomFields[] = $itemCustomField;
+            $itemCustomField->addItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItemCustomField(ItemCustomField $itemCustomField): self
+    {
+        if ($this->itemCustomFields->removeElement($itemCustomField)) {
+            $itemCustomField->removeItem($this);
+        }
 
         return $this;
     }

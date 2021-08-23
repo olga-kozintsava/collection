@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Item;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use phpDocumentor\Reflection\Types\This;
 
 /**
  * @method Item|null find($id, $lockMode = null, $lockVersion = null)
@@ -45,4 +46,12 @@ class ItemRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findByLastAdded(): array
+    {
+        return $this->createQueryBuilder('i')
+            ->orderBy('i.dateCreate')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+    }
 }

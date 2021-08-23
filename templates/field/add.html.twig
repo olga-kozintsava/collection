@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+{#    {{ form_errors(form) }}#}
+{#    {{ form_row(form.title) }}#}
+<div>  {{ form_label(form.title) }}
+    {{ form_errors(form.title) }}
+    {{ form_widget(form.title) }}
+</div>
+<div>
+    {{ form_widget(form.add ) }}
+</div>
+{{ form_end(form) }}

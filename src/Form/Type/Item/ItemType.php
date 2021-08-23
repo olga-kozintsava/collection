@@ -30,12 +30,12 @@ class ItemType extends AbstractType
 //            ->add('tag', CollectionType::class, [
 //                'required' => false,
 //                'attr' => ['class' => 'form-control']])
-            ->add('tag', CollectionType::class, [
-                'entry_type' => TagType::class,
-                'required' => false,
-                'entry_options' => ['label' => false],
-                'allow_add' => true,
-            ])
+//            ->add('tag', CollectionType::class, [
+//                'entry_type' => TagType::class,
+//                'required' => false,
+//                'entry_options' => ['label' => false],
+//                'allow_add' => true,
+//            ])
             ->add('add', SubmitType::class, [
                 'label' => 'Add',
                 'attr' => ['class' => 'btn btn-block btn-dark']

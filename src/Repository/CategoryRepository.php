@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @method Category|null find($id, $lockMode = null, $lockVersion = null)
@@ -45,5 +46,25 @@ class CategoryRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+    public function findByMaxItem()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c.title, c.id, count(i.category) as ItemCount')
+            ->leftJoin('c.items', 'i')
+            ->groupBy('c.id')
+            ->orderBy('ItemCount', 'DESC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult();
+
+
+
+    }
+    //SELECT
+    //    c.category_name, COUNT(p.category_id) AS product_count
+    //FROM
+    //    categories AS c
+    //LEFT JOIN
+    //    products AS p ON p.category_id = c.category_id
 
 }

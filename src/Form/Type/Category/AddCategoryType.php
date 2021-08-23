@@ -7,6 +7,7 @@ namespace App\Form\Type\Category;
 
 use App\DTO\User\UserRegistrationData;
 use App\Entity\Category;
+use App\Form\Type\CustomField\CustomFieldType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -40,6 +41,7 @@ class AddCategoryType extends AbstractType
                     'Сoins' => 'Coins',
                 ],
                 'attr' => ['class' => 'form-control']])
+            ->add('field', CustomFieldType::class, ['mapped' => false])
             ->add('add', SubmitType::class, [
                 'label' => 'Add',
                 'attr' => ['class' => 'btn btn-block btn-dark']

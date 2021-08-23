@@ -1,25 +1,23 @@
 {% extends 'base.html.twig' %}
 {% block title %}Main{% endblock %}
-
 {% block body %}
-
-
-        <h3>Last added items</h3>
+    <h3>Last added items</h3>
     {% for item in lastItems %}
         <div>
-        {{ item }}
+            <a href="{{ path('item_show',{'id':item.id}) }}">{{ item }}</a>
         </div>
-        {% else %}
-        <div>
-            <h3>No items</h3>
-        </div>
-{% endfor%}
-<h3>Collections with the largest number of items</h3>
-    {% for category in maxItemCategory %}
-        <div><a href="{{ path('category_show',{'id':category.id}) }}" {{ category.title }} </a>{{ category.ItemCount }}</div>
     {% else %}
         <div>
-            <h3>No collections</h3>
+            <h4>No items</h4>
         </div>
-    {% endfor%}
+    {% endfor %}
+    <h3>Collections with the largest number of items</h3>
+    {% for category in maxItemCategory %}
+        <div><a href="{{ path('category_show',{'id':category.id}) }}">{{ category.title }} </a>{{ category.ItemCount }}
+        </div>
+    {% else %}
+        <div>
+            <h4>No collections</h4>
+        </div>
+    {% endfor %}
 {% endblock %}

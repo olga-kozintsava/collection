@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 {% block title %}Collection list{% endblock %}
 {% block body %}
-{{ category.title }}
-<a href="{{ path('item_add',{'id':category.id}) }}" class="btn btn-dark">Add item</a>
+<div class="container">
+<div>{{ category.title }}</div>
+<div><a href="{{ path('item_add',{'id':category.id}) }}" class="btn btn-dark">Add item</a></div>
 <div class="container">
     <div class="row" style="margin-top:50px">
         <div class="col">
+
             <table class="table">
                 <thead>
                 <tr>
@@ -15,8 +17,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for item in items %}
 
+                {% for item in items %}
                 <tr>
                     <td>{{ loop.index }}</td>
                     <td> {{ item.title }}</td>

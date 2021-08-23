@@ -49,7 +49,7 @@ class ItemRepository extends ServiceEntityRepository
     public function findByLastAdded(): array
     {
         return $this->createQueryBuilder('i')
-            ->orderBy('i.dateCreate')
+            ->orderBy('i.dateCreate', 'DESC')
             ->setMaxResults(5)
             ->getQuery()
             ->getResult();

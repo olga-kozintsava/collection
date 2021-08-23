@@ -7,11 +7,11 @@ namespace App\Controller\Item;
 use App\Entity\Category;
 use App\Entity\Item;
 use App\Entity\Tag;
-use App\Form\Type\Category\AddCategoryType;
 use App\Form\Type\Item\ItemType;
 use App\Repository\CategoryRepository;
+use App\Repository\CommentRepository;
 use App\Repository\CustomFieldRepository;
-use App\Service\Category\CategoryCreator;
+use App\Repository\ItemRepository;
 use App\Service\Item\ItemCreator;
 use App\Service\Item\ItemDelete;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,8 +22,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class ItemController extends AbstractController
 {
     public function __construct(private CustomFieldRepository $customFieldRepository,
-                                private CategoryRepository $categoryRepository,
-                                private ItemCreator $itemCreator)
+                                private CategoryRepository    $categoryRepository,
+                                private ItemRepository        $itemRepository,
+                                private ItemCreator           $itemCreator,
+                                private ItemDelete            $itemDelete,
+                                private CommentRepository $commentRepository)
     {
     }
 
@@ -34,7 +37,7 @@ class ItemController extends AbstractController
      * @param int $id
      * @return Response
      */
-    public function add(Request $request,int $id): Response
+    public function add(Request $request, int $id): Response
     {
         $item = new Item();
         $form = $this->createForm(ItemType::class, $item);
@@ -43,7 +46,7 @@ class ItemController extends AbstractController
             $this->itemCreator->create($form, $id);
             $category = $this->categoryRepository->findOneById($id);
 
-            $f= $this->customFieldRepository->findByCategory($id);
+            $f = $this->customFieldRepository->findByCategory($id);
             var_dump($f);
 
 //          return $this->redirectToRoute('category_show', ['id'=>$id]);
@@ -52,17 +55,35 @@ class ItemController extends AbstractController
             'form' => $form
         ]);
     }
+
     /**
-     * @Route("{category_id}/item/delete/{id}", name="item_delete")
-     * @param int $category_id
+     * @Route("/item/{id}", name="item_show", methods={"GET"})
+     *
      * @param int $id
-     * @param ItemDelete $itemDelete
      * @return Response
      */
-    public function delete(int $category_id, int $id, ItemDelete $itemDelete): Response
+    public function show(int $id): Response
     {
-        $itemDelete->delete($id);
-        return $this->redirectToRoute('category_show', ['id'=>$category_id]);
+
+        $item = $this->itemRepository->findOneById($id);
+        $comments = $this->commentRepository->findByItem($item);
+        return $this->render('item/show.html.twig', [
+            'item' => $item,
+            'comments' => $comments
+        ]);
+    }
+
+    /**
+     * @Route("{category_id}/item/delete/{id}", name="item_delete")
+     *
+     * @param int $category_id
+     * @param int $id
+     * @return Response
+     */
+    public function delete(int $category_id, int $id): Response
+    {
+        $this->itemDelete->delete($id);
+        return $this->redirectToRoute('category_show', ['id' => $category_id]);
     }
 
 }

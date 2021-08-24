@@ -2,44 +2,21 @@
 {% block title %}Item{% endblock %}
 
 {% block body %}
-
-        {{ item }}
-        <div>
-            <a href="{{ path('comment_new',{'id':item.id}) }}" class="btn btn-outline-dark">Add comment</a>
-        </div>
-    {% for comment in comments %}
+    {{ item }}
+    <div>
+        <a href="{{ path('comment_new',{'id':item.id}) }}" class="btn btn-outline-dark">Add comment</a>
+    </div>
+    <div>
+        {% include 'like/add.html.twig' with {
+            'item': item,
+            'like': like } only %}
+    </div>
     <div class="row d-flex justify-content-center">
         <div class="col-md-8 col-lg-6">
             <div class="card shadow-0 border" style="background-color: #f0f2f5;">
-
-
-                <div class="card-body p-1">
-
-
-                        <div class="card mb-4">
-                            <div class="card-body">
-
-
-                                <div class="d-flex justify-content-between">
-                                    <div class="d-flex flex-row align-items-center">
-                                        <p class="small mb-0 ms-2"> {{ comment.user.name }}</p>
-                                    </div>
-                                    <div class="d-flex flex-row align-items-center">
-                                        <p class="small text-muted mb-0">{{ comment.dateCreate|date("d/m/Y") }}</p>
-                                    </div>
-                                </div>
-                                <div>
-                                    <p class="ms-2"> {{ comment.description }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-
-
-                </div>
+                {% include 'comment/list.html.twig' with {
+                    'comments': comments} %}
             </div>
         </div>
     </div>
-
-
 {% endblock %}

@@ -15,7 +15,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ItemDelete
 {
     public function __construct(private EntityManagerInterface $entityManager,
-                                private ItemRepository     $itemRepository)
+                                private ItemRepository         $itemRepository)
     {
     }
 
@@ -26,11 +26,11 @@ class ItemDelete
     public function delete($id): Response
     {
         $item = $this->itemRepository->findOneById($id);
-        if (!is_null($item)){
-            new JsonResponse(['status' => 'error']);
+        if ($item) {
+            $this->entityManager->remove($item);
+            $this->entityManager->flush();
+            return new JsonResponse(['status' => 'ok']);
         }
-        $this->entityManager->remove($item);
-        $this->entityManager->flush();
-        return new JsonResponse(['status' => 'ok']);
+        return new JsonResponse(['status' => 'error']);
     }
 }

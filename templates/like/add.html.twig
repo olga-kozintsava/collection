@@ -1,0 +1,5 @@
+<form action="{{ path('like', {'item_id':item.id}) }}" method="post">
+    {% for i in like %}
+    <button type="submit" name="submit" class="btn btn-danger rounded-circle">Like {{ i.likeCount }}</button>
+    {% endfor %}
+</form>

@@ -14,6 +14,7 @@ use App\Repository\CustomFieldRepository;
 use App\Repository\ItemRepository;
 use App\Service\Item\ItemCreator;
 use App\Service\Item\ItemDelete;
+use App\Service\like\LikeCount;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +27,8 @@ class ItemController extends AbstractController
                                 private ItemRepository        $itemRepository,
                                 private ItemCreator           $itemCreator,
                                 private ItemDelete            $itemDelete,
-                                private CommentRepository $commentRepository)
+                                private CommentRepository     $commentRepository,
+                                private LikeCount             $likeCount)
     {
     }
 
@@ -67,9 +69,11 @@ class ItemController extends AbstractController
 
         $item = $this->itemRepository->findOneById($id);
         $comments = $this->commentRepository->findByItem($item);
+        $likeCount = $this->likeCount->count($item);
         return $this->render('item/show.html.twig', [
             'item' => $item,
-            'comments' => $comments
+            'comments' => $comments,
+            'like' => $likeCount
         ]);
     }
 

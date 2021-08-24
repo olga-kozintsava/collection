@@ -129,11 +129,17 @@ class Item
      */
     private $comments;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Like::class, mappedBy="item")
+     */
+    private $likes;
+
     public function __construct()
     {
         $this->tag = new ArrayCollection();
         $this->itemCustomFields = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->likes = new ArrayCollection();
     }
     public function __toString(): string
     {
@@ -424,6 +430,36 @@ class Item
             // set the owning side to null (unless already changed)
             if ($comment->getItem() === $this) {
                 $comment->setItem(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Like[]
+     */
+    public function getLikes(): Collection
+    {
+        return $this->likes;
+    }
+
+    public function addLike(Like $like): self
+    {
+        if (!$this->likes->contains($like)) {
+            $this->likes[] = $like;
+            $like->setItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLike(Like $like): self
+    {
+        if ($this->likes->removeElement($like)) {
+            // set the owning side to null (unless already changed)
+            if ($like->getItem() === $this) {
+                $like->setItem(null);
             }
         }
 

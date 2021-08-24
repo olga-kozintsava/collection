@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommentController extends AbstractController
 {
     /**
-     * @Route("{id}/comment/add", name="comment_new", methods={"GET", "POST"})
+     * @Route("item/{id}/comment/add", name="comment_new", methods={"GET", "POST"})
      *
      * @param Request $request
      * @param int $id

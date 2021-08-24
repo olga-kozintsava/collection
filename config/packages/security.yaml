@@ -45,4 +45,4 @@ security:
     access_control:
          - { path: ^/category, roles: IS_AUTHENTICATED_FULLY }
          - { path: ^/item/add, roles: IS_AUTHENTICATED_FULLY }
-        # - { path: ^/profile, roles: ROLE_USER }
+         - { path: ^/like/add, roles: IS_AUTHENTICATED_FULLY }

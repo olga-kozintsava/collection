@@ -14,6 +14,7 @@
         "doctrine/orm": "^2.9",
         "easycorp/easyadmin-bundle": "^3.5",
         "knpuniversity/oauth2-client-bundle": "^2.8",
+        "league/html-to-markdown": "^5.0",
         "league/oauth2-facebook": "^2.0",
         "league/oauth2-github": "^3.0",
         "league/oauth2-google": "^4.0",
@@ -49,7 +50,8 @@
         "symfony/web-link": "5.3.*",
         "symfony/webpack-encore-bundle": "^1.12",
         "symfony/yaml": "5.3.*",
-        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/extra-bundle": "^3.3",
+        "twig/markdown-extra": "^3.3",
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {

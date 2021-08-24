@@ -13,7 +13,9 @@ use App\Repository\CommentRepository;
 use App\Repository\CustomFieldRepository;
 use App\Repository\ItemRepository;
 use App\Service\Item\ItemCreator;
+use App\Service\Item\ItemCustomFieldCreate;
 use App\Service\Item\ItemDelete;
+use App\Service\Item\ItemFormCreate;
 use App\Service\like\LikeCount;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,13 +24,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ItemController extends AbstractController
 {
-    public function __construct(private CustomFieldRepository $customFieldRepository,
-                                private CategoryRepository    $categoryRepository,
+    public function __construct(private ItemCustomFieldCreate $itemCustomFieldCreate,
                                 private ItemRepository        $itemRepository,
-                                private ItemCreator           $itemCreator,
+                                private ItemFormCreate        $itemFormCreate,
                                 private ItemDelete            $itemDelete,
                                 private CommentRepository     $commentRepository,
-                                private LikeCount             $likeCount)
+                                private LikeCount             $likeCount,
+                                private ItemCreator           $itemCreator,
+                                private CustomFieldRepository $customFieldRepository)
     {
     }
 
@@ -39,19 +42,15 @@ class ItemController extends AbstractController
      * @param int $id
      * @return Response
      */
-    public function add(Request $request, int $id): Response
+    public
+    function add(Request $request, int $id): Response
     {
-        $item = new Item();
-        $form = $this->createForm(ItemType::class, $item);
+        $form = $this->itemFormCreate->create($id);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->itemCreator->create($form, $id);
-            $category = $this->categoryRepository->findOneById($id);
-
-            $f = $this->customFieldRepository->findByCategory($id);
-            var_dump($f);
-
-//          return $this->redirectToRoute('category_show', ['id'=>$id]);
+            $item = $this->itemCreator->create($form, $id);
+            $this->itemCustomFieldCreate->create($form, $id, $item);
+            return $this->redirectToRoute('category_show', ['id' => $id]);
         }
         return $this->renderForm('item/add.html.twig', [
             'form' => $form
@@ -64,9 +63,9 @@ class ItemController extends AbstractController
      * @param int $id
      * @return Response
      */
-    public function show(int $id): Response
+    public
+    function show(int $id): Response
     {
-
         $item = $this->itemRepository->findOneById($id);
         $comments = $this->commentRepository->findByItem($item);
         $likeCount = $this->likeCount->count($item);
@@ -84,7 +83,8 @@ class ItemController extends AbstractController
      * @param int $id
      * @return Response
      */
-    public function delete(int $category_id, int $id): Response
+    public
+    function delete(int $category_id, int $id): Response
     {
         $this->itemDelete->delete($id);
         return $this->redirectToRoute('category_show', ['id' => $category_id]);

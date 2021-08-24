@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}Add collection{% endblock %}
+{% block title %}Add item{% endblock %}
 
 {% block body %}
 
@@ -12,6 +12,17 @@
                     <div>{{ form_label(form.title) }}
                         {{ form_widget(form.title) }}
                         {{ form_errors(form.title) }}
+                    </div>
+                    <div>
+                        <ul>
+                            {% for tagElem in form.tag %}
+                                <li>
+                                    {{ form_label(tagElem.name) }}
+                                    {{ form_widget(tagElem.name) }}
+                                    {{ form_errors(tagElem.name) }}
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </div>
 {#                    <div>  {{ form_label(form.tag.name) }}#}
 {#                        {{ form_widget(form.tag) }}#}

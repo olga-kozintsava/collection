@@ -30,14 +30,11 @@ class ItemCustomField
     private $value;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Item::class, inversedBy="itemCustomFields")
+     * @ORM\ManyToOne(targetEntity=Item::class, inversedBy="itemCustomFields")
      */
     private $item;
 
-    public function __construct()
-    {
-        $this->item = new ArrayCollection();
-    }
+
 
     public function getId(): ?int
     {
@@ -68,27 +65,17 @@ class ItemCustomField
         return $this;
     }
 
-    /**
-     * @return Collection|Item[]
-     */
-    public function getItem(): Collection
+    public function getItem(): ?Item
     {
         return $this->item;
     }
 
-    public function addItem(Item $item): self
+    public function setItem(?Item $item): self
     {
-        if (!$this->item->contains($item)) {
-            $this->item[] = $item;
-        }
+        $this->item = $item;
 
         return $this;
     }
 
-    public function removeItem(Item $item): self
-    {
-        $this->item->removeElement($item);
 
-        return $this;
-    }
 }

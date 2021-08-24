@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Item;
 
+use App\Entity\CustomField;
 use App\Form\Type\Category\AddCategoryType;
 use App\Entity\Item;
 use App\Form\Type\Tag\TagType;
+use App\Repository\CustomFieldRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -14,13 +16,17 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ItemType extends AbstractType
 {
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
+     *
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -30,22 +36,32 @@ class ItemType extends AbstractType
 //            ->add('tag', CollectionType::class, [
 //                'required' => false,
 //                'attr' => ['class' => 'form-control']])
-//            ->add('tag', CollectionType::class, [
-//                'entry_type' => TagType::class,
-//                'required' => false,
+            ->add('tag', CollectionType::class, [
+                'entry_type' => TagType::class,
+                'required' => false,
 //                'entry_options' => ['label' => false],
-//                'allow_add' => true,
-//            ])
+                'allow_add' => true,
+            ])
             ->add('add', SubmitType::class, [
                 'label' => 'Add',
                 'attr' => ['class' => 'btn btn-block btn-dark']
             ]);
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $fields = $event->getForm()->getConfig()->getOptions()['fields'];
+            $form = $event->getForm();
+            foreach ($fields as $value) {
+                $form->add($value->getTitle(), TextType::class, ['mapped' => false]);
+            }
+
+        });
     }
 
-    public function configureOptions(OptionsResolver $resolver):void
+    public function configureOptions(OptionsResolver $resolver): void
     {
+        $resolver->setRequired('fields');
         $resolver->setDefaults([
             'data_class' => Item::class,
         ]);
+
     }
 }

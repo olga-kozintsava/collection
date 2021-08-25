@@ -33,14 +33,12 @@ class ItemType extends AbstractType
         $builder
             ->add('title', TextType::class, ['attr' =>
                 ['class' => 'form-control']])
-//            ->add('tag', CollectionType::class, [
-//                'required' => false,
-//                'attr' => ['class' => 'form-control']])
             ->add('tag', CollectionType::class, [
                 'entry_type' => TagType::class,
                 'required' => false,
-//                'entry_options' => ['label' => false],
+                'entry_options' => ['label' => false],
                 'allow_add' => true,
+                'by_reference' => false,
             ])
             ->add('add', SubmitType::class, [
                 'label' => 'Add',

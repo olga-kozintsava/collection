@@ -5,6 +5,9 @@
         <div class="col-md-8 col-lg-6">
     <div class="border border-3 mt-4">
         <h4>{{ item }}</h4>
+        {% for i in  item.tag %}
+          <p><em>#{{ i }}</em></p>
+        {% endfor %}
     {% for field in  item.itemCustomFields %}
         <b>{{ field.field }}</b>
         <p>{{ field.value }} </p>

@@ -48,6 +48,8 @@ class ItemController extends AbstractController
         $form = $this->itemFormCreate->create($id);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            //var_dump($form->getData()->getTag());
+           // var_dump($form->getData());
             $item = $this->itemCreate->create($form, $id);
             $this->itemCustomFieldCreate->create($form, $id, $item);
             return $this->redirectToRoute('category_show', ['id' => $id]);

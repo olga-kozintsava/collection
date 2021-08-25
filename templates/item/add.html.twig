@@ -7,43 +7,50 @@
         <div class="row d-flex justify-content-center" style="margin: 50px">
             <div class="col-md-6 col-md-offset-6 ">
                 <div class="add_category">
-                    {{ form_start(form)}}
+                    {{ form_start(form) }}
 
                     <div>{{ form_label(form.title) }}
                         {{ form_widget(form.title) }}
                         {{ form_errors(form.title) }}
                     </div>
                     <div>
-                        <ul>
+                        <button type="button" class="add_item_link" data-collection-holder-class="tags">Add a tag
+                        </button>
+                        <ul class="tags" data-prototype="{{ form_widget(form.tag.vars.prototype)|e('html_attr') }}">
                             {% for tagElem in form.tag %}
-                                <li>
-                                    {{ form_label(tagElem.name) }}
-                                    {{ form_widget(tagElem.name) }}
-                                    {{ form_errors(tagElem.name) }}
-                                </li>
+                                <li>{{ form_label(tagElem) }}
+                                    {{ form_widget(tagElem) }}</li>
                             {% endfor %}
                         </ul>
                     </div>
-{#                    <div>  {{ form_label(form.tag.name) }}#}
-{#                        {{ form_widget(form.tag) }}#}
-{#                        {{ form_errors(form.tag) }}#}
-{#                    </div>#}
-
-{#                   <div> <ul class="tags">#}
-{#                        {% for tag in form.tag %}#}
-{#                            <li>{{ form_row(tag.name) }}</li>#}
-{#                        {% endfor %}#}
-{#                    </ul>#}
-
                     <div>
                         {{ form_widget(form.add ) }}
                     </div>
                     {{ form_end(form) }}
-
                 </div>
             </div>
-
         </div>
     </div>
 
+    <script>
+        jQuery(document).ready(function () {
+            var $tagsCollectionHolder = $('ul.tags');
+            $tagsCollectionHolder.data('index', $tagsCollectionHolder.find('input').length);
+            $('body').on('click', '.add_item_link', function (e) {
+                var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+                addFormToCollection($collectionHolderClass);
+            })
+        });
+
+        function addFormToCollection($collectionHolderClass) {
+            var $collectionHolder = $('.' + $collectionHolderClass);
+            var prototype = $collectionHolder.data('prototype');
+            var index = $collectionHolder.data('index');
+            var newForm = prototype;
+            newForm = newForm.replace(/__name__/g, index);
+            $collectionHolder.data('index', index + 1);
+            var $newFormLi = $('<li></li>').append(newForm);
+            $collectionHolder.append($newFormLi)
+        }
+    </script>
 {% endblock %}

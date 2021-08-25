@@ -27,10 +27,7 @@ class Item
      */
     private $title;
 
-    /**
-     * @ORM\Column(type="array", nullable=true)
-     */
-    private  $tag ;
+
 
     /**
      * @ORM\Column(type="datetime")
@@ -62,6 +59,11 @@ class Item
      */
     private $itemCustomFields;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="items", cascade={"persist"})
+     */
+    private $tag;
+
     public function __construct()
     {
         $this->tag = new ArrayCollection();
@@ -91,17 +93,7 @@ class Item
         return $this;
     }
 
-    public function getTag(): Collection
-    {
-        return $this->tag;
-    }
 
-    public function setTag(?array $tag): self
-    {
-        $this->tag = $tag;
-
-        return $this;
-    }
 
     public function getDate(): ?\DateTimeInterface
     {
@@ -217,6 +209,30 @@ class Item
                 $itemCustomField->setItem(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Tag[]
+     */
+    public function getTag(): Collection
+    {
+        return $this->tag;
+    }
+
+    public function addTag(Tag $tag): self
+    {
+        if (!$this->tag->contains($tag)) {
+            $this->tag[] = $tag;
+        }
+
+        return $this;
+    }
+
+    public function removeTag(Tag $tag): self
+    {
+        $this->tag->removeElement($tag);
 
         return $this;
     }

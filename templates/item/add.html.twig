@@ -13,14 +13,15 @@
                         {{ form_widget(form.title) }}
                         {{ form_errors(form.title) }}
                     </div>
-                    <div>
-                        <button type="button" class="add_item_link" data-collection-holder-class="tags">Add a tag
-                        </button>
+                    <div class="mt-2">
+                        <button type="button" class="add_item_link btn btn-dark" data-collection-holder-class="tags">Add tag
+                        </button></div>
+                    <div class="d-flex justify-content-between mt-2">
                         <ul class="tags" data-prototype="{{ form_widget(form.tag.vars.prototype)|e('html_attr') }}">
-                            {% for tagElem in form.tag %}
-                                <li>{{ form_label(tagElem) }}
-                                    {{ form_widget(tagElem) }}</li>
-                            {% endfor %}
+{#                            {% for tagElem in form.tag %}#}
+{#                                <li>{{ form_label(tagElem) }}#}
+{#                                    {{ form_widget(tagElem) }}</li>#}
+{#                            {% endfor %}#}
                         </ul>
                     </div>
                     <div>
@@ -36,6 +37,8 @@
         jQuery(document).ready(function () {
             var $tagsCollectionHolder = $('ul.tags');
             $tagsCollectionHolder.data('index', $tagsCollectionHolder.find('input').length);
+            $tagsCollectionHolder.find('li').each(function() {
+                addTagFormDeleteLink($(this))});
             $('body').on('click', '.add_item_link', function (e) {
                 var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
                 addFormToCollection($collectionHolderClass);
@@ -43,14 +46,24 @@
         });
 
         function addFormToCollection($collectionHolderClass) {
+
             var $collectionHolder = $('.' + $collectionHolderClass);
             var prototype = $collectionHolder.data('prototype');
             var index = $collectionHolder.data('index');
             var newForm = prototype;
             newForm = newForm.replace(/__name__/g, index);
             $collectionHolder.data('index', index + 1);
-            var $newFormLi = $('<li></li>').append(newForm);
+            var $newFormLi = $('<li class="d-inline-flex justify-content-between mt-2"></li>').append(newForm);
+            addTagFormDeleteLink($newFormLi);
             $collectionHolder.append($newFormLi)
+        }
+
+        function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormButton = $('<button type="button" class="btn btn-dark btn-sm">Delete</button>');
+            $tagFormLi.append($removeFormButton);
+            $removeFormButton.on('click', function(e) {
+                $tagFormLi.remove();
+            });
         }
     </script>
 {% endblock %}

@@ -4,7 +4,7 @@
     <h3>Last added items</h3>
     {% for item in lastItems %}
         <div>
-            <a href="{{ path('item_show',{'id':item.id}) }}">{{ item }}</a>
+            <a href="{{ path('item_show',{'id':item.id}) }}" class="link-dark">{{ item }}</a>
         </div>
     {% else %}
         <div>
@@ -13,7 +13,8 @@
     {% endfor %}
     <h3>Collections with the largest number of items</h3>
     {% for category in maxItemCategory %}
-        <div><a href="{{ path('category_show',{'id':category.id}) }}">{{ category.title }} </a>{{ category.ItemCount }}
+        <div><a href="{{ path('category_show',{'id':category.id}) }}" class="link-dark">{{ category.title }} </a>
+            {{ category.ItemCount }} items
         </div>
     {% else %}
         <div>

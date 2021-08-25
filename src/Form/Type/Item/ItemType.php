@@ -49,9 +49,12 @@ class ItemType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $fields = $event->getForm()->getConfig()->getOptions()['fields'];
             $form = $event->getForm();
-            foreach ($fields as $value) {
-                $form->add($value->getTitle(), TextType::class, ['mapped' => false]);
+            if (!is_null($fields)){
+                foreach ($fields as $value) {
+                    $form->add($value->getTitle(), TextType::class, ['mapped' => false]);
+                }
             }
+
 
         });
     }

@@ -37,6 +37,7 @@ class Comment
 
     /**
      * @ORM\ManyToOne(targetEntity=Item::class, inversedBy="comments")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private ?Item $item;
 

@@ -9,7 +9,7 @@ use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
 
-class ItemCreator
+class ItemCreate
 {
     public function __construct(private EntityManagerInterface $entityManager,
                                 private CategoryRepository $categoryRepository)

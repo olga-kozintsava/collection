@@ -1,8 +1,16 @@
 {% extends 'base.html.twig' %}
 {% block title %}Item{% endblock %}
-
 {% block body %}
-    {{ item }}
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-8 col-lg-6">
+    <div class="border border-3 mt-4">
+        <h4>{{ item }}</h4>
+    {% for field in  item.itemCustomFields %}
+        <b>{{ field.field }}</b>
+        <p>{{ field.value }} </p>
+    {% endfor %}
+    </div>
+            <div class="d-flex justify-content-between mt-4">
     <div>
         <a href="{{ path('comment_new',{'id':item.id}) }}" class="btn btn-outline-dark">Add comment</a>
     </div>
@@ -11,9 +19,8 @@
             'item': item,
             'like': like } only %}
     </div>
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="card shadow-0 border" style="background-color: #f0f2f5;">
+            </div>
+            <div class="card shadow-0 border mt-1" style="background-color: #f0f2f5;" >
                 {% include 'comment/list.html.twig' with {
                     'comments': comments} %}
             </div>

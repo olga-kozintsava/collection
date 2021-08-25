@@ -41,7 +41,8 @@ class AddCategoryType extends AbstractType
                     'Сoins' => 'Coins',
                 ],
                 'attr' => ['class' => 'form-control']])
-            ->add('field', CustomFieldType::class, ['mapped' => false])
+            ->add('field', CustomFieldType::class, [
+                'mapped' => false])
             ->add('add', SubmitType::class, [
                 'label' => 'Add',
                 'attr' => ['class' => 'btn btn-block btn-dark']

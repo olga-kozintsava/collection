@@ -12,7 +12,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\CommentRepository;
 use App\Repository\CustomFieldRepository;
 use App\Repository\ItemRepository;
-use App\Service\Item\ItemCreator;
+use App\Service\Item\ItemCreate;
 use App\Service\Item\ItemCustomFieldCreate;
 use App\Service\Item\ItemDelete;
 use App\Service\Item\ItemFormCreate;
@@ -30,7 +30,7 @@ class ItemController extends AbstractController
                                 private ItemDelete            $itemDelete,
                                 private CommentRepository     $commentRepository,
                                 private LikeCount             $likeCount,
-                                private ItemCreator           $itemCreator,
+                                private ItemCreate            $itemCreate,
                                 private CustomFieldRepository $customFieldRepository)
     {
     }
@@ -48,7 +48,7 @@ class ItemController extends AbstractController
         $form = $this->itemFormCreate->create($id);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $item = $this->itemCreator->create($form, $id);
+            $item = $this->itemCreate->create($form, $id);
             $this->itemCustomFieldCreate->create($form, $id, $item);
             return $this->redirectToRoute('category_show', ['id' => $id]);
         }

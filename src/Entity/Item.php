@@ -40,7 +40,7 @@ class Item
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="items")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Assert\Valid
      */
     private $category;

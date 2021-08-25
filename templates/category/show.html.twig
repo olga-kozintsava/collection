@@ -2,36 +2,30 @@
 {% block title %}Collection list{% endblock %}
 {% block body %}
 <div class="container">
-<div>{{ category.title }}</div>
-<div><a href="{{ path('item_add',{'id':category.id}) }}" class="btn btn-dark">Add item</a></div>
-<div class="container">
-    <div class="row" style="margin-top:50px">
-        <div class="col">
-
-            <table class="table">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th scope="col">title</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-
+    <div>{{ category.title }}</div>
+    <div><a href="{{ path('item_add',{'id':category.id}) }}" class="btn btn-dark">Add item</a></div>
+    <div class="container">
+        <div class="row" style="margin-top:50px">
+            <div class="col">
                 {% for item in items %}
-                <tr>
-                    <td>{{ loop.index }}</td>
-                    <td> {{ item.title }}</td>
-{#                    <td><a href="{{ path('category_show',{'id':category.id}) }}" class="btn btn-dark">Show</a>#}
-{#                        <a href="{{ path('category_edit',{'id':category.id}) }}" class="btn btn-outline-dark">Edit</a>#}
-                    <td><a href="{{ path('item_delete',{'category_id':category.id, 'id':item.id}) }}" class="btn btn-danger">Delete</a></td>
-                </tr>
-                {% else %}
-                    <div>No items</div>
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body t-1">
+                            <h5 class="card-title">{{ loop.index }}.{{ item.title }} </h5>
+                            <h6 class="card-subtitle mb-2 text-muted"></h6>
+                            {% for field in  item.itemCustomFields %}
+                                <b>{{ field.field }}</b>
+                                <p>{{ field.value }} </p>
+                            {% endfor %}
+                            <a href="{{ path('item_show',{'id':item.id}) }}" class="btn btn-dark">Show</a>
+                            <a href="{{ path('item_delete',{'category_id':category.id, 'id':item.id}) }}"
+                               class="btn btn-danger">Delete</a>
+                        </div>
+
+                    </div>
                 {% endfor %}
-                </tbody>
-            </table>
+
+            </div>
         </div>
     </div>
 </div>
-                {% endblock %}
+    {% endblock %}

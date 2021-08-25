@@ -31,6 +31,7 @@ class ItemCustomField
 
     /**
      * @ORM\ManyToOne(targetEntity=Item::class, inversedBy="itemCustomFields")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $item;
 
@@ -77,5 +78,8 @@ class ItemCustomField
         return $this;
     }
 
-
+public function __toString(): string
+{
+    return $this->field . $this->value;
+}
 }

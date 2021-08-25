@@ -25,6 +25,7 @@ class Like
 
     /**
      * @ORM\ManyToOne(targetEntity=Item::class, inversedBy="likes")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private ?Item $item;
 

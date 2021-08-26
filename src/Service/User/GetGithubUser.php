@@ -22,7 +22,7 @@ class GetGithubUser
     public function getUser($accessToken, $client): User
     {
         $githubUser = $client->fetchUserFromToken($accessToken);
-        $existingUser = $this->userRepository->findOneByGoogleClientId($githubUser->getId());
+        $existingUser = $this->userRepository->findOneByGithubClientId($githubUser->getId());
 
         if ($existingUser) {
             return $existingUser;

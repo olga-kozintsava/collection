@@ -41,7 +41,7 @@ class OAuthGithubAuthenticator extends OAuth2Authenticator
      */
     public function authenticate(Request $request): PassportInterface
     {
-        $client = $this->clientRegistry->getClient('github:');
+        $client = $this->clientRegistry->getClient('github');
         $accessToken = $this->fetchAccessToken($client);
         return new SelfValidatingPassport(
             new UserBadge((string)$accessToken,

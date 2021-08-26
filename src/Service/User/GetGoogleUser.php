@@ -11,7 +11,7 @@ class GetGoogleUser
 {
     public function __construct(private UserRepository     $userRepository,
                                 private UserGoogleIdUpdate $googleIdUpdate,
-                                private UserAuthCreate     $authCreate)
+                                private UserGoogleCreate   $authCreate)
     {
     }
 

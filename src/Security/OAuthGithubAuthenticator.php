@@ -4,7 +4,9 @@ namespace App\Security;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use App\Service\User\GetGithubUser;
 use App\Service\User\GetGoogleUser;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
@@ -22,7 +24,7 @@ class OAuthGithubAuthenticator extends OAuth2Authenticator
 {
     public function __construct(private ClientRegistry  $clientRegistry,
                                 private RouterInterface $router,
-                                )
+                                private GetGithubUser   $getGithubUser)
     {
     }
 
@@ -46,28 +48,7 @@ class OAuthGithubAuthenticator extends OAuth2Authenticator
         return new SelfValidatingPassport(
             new UserBadge((string)$accessToken,
                 function () use ($accessToken, $client) {
-//                    return $this->getGoogleUser->getUser($accessToken, $client);
-                    $githubUser = $client->fetchUserFromToken($accessToken);
-                    $email = $githubUser->getEmail();
-                    var_dump($githubUser);
-//                    $existingUser = $this->userRepository->findOneByGithubClientId($githubUser->getId());
-//                    if ($existingUser) {
-//                        return $existingUser;
-//                    }
-//                    $user = $this->userRepository->findOneByEmail($email);
-//                    if ($user) {
-//                        $user->setGoogleClientId($githubUser->getId());
-//
-//
-//                    } else {
-//                        $user = new User();
-//                        $user->setGithubClientId($githubUser->getId());
-//                        $user->setEmail($email);
-//                        $user->setName($githubUser->getName());
-//                    }
-//                    $this->entityManager->persist($user);
-//                    $this->entityManager->flush();
-//                    return $user;
+                    return $this->getGithubUser->getUser($accessToken, $client);
                 }),
         );
     }

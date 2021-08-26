@@ -28,6 +28,7 @@ security:
             entry_point: form_login
             custom_authenticators:
                 - App\Security\OAuthGoogleAuthenticator
+                - App\Security\OAuthGithubAuthenticator
             logout:
                 path: logout
 

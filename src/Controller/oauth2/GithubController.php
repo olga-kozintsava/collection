@@ -28,12 +28,14 @@ class GithubController extends AbstractController
 
     /**
      * @Route("/connect/github/check", name="connect_github_check")
-     * @param Request $request
-     * @param ClientRegistry $clientRegistry
-     * @return void
      */
-    public function connectGithubCheckAction(Request $request, ClientRegistry $clientRegistry)
+    public function connectGithubCheckAction()
     {
+ //       if (!$this->getUser()) {
+//            return new JsonResponse(['status' => false, 'message' => "User not found!"]);
+//        } else {
+//            return $this->redirectToRoute('form_login');
+//        }
     }
 
 }

@@ -7,7 +7,7 @@ namespace App\Service\User;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
-class UserAuthCreate
+class UserGoogleCreate
 {
     public function __construct(private EntityManagerInterface $entityManager)
     {

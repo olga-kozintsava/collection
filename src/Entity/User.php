@@ -71,6 +71,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $likes;
 
+    /**
+     * @ORM\Column(type="string", length=191, nullable=true)
+     */
+    private ?string $githubClientId;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -256,6 +261,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $like->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGithubClientId(): ?string
+    {
+        return $this->githubClientId;
+    }
+
+    public function setGithubClientId(?string $githubClientId): self
+    {
+        $this->githubClientId = $githubClientId;
 
         return $this;
     }

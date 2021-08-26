@@ -1,10 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Security;
 
+use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Service\User\GetGoogleUser;
+use Doctrine\ORM\EntityManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,11 +18,11 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\PassportInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-class OAuthGoogleAuthenticator extends OAuth2Authenticator
+class OAuthGithubAuthenticator extends OAuth2Authenticator
 {
-    public function __construct(private ClientRegistry         $clientRegistry,
-                                private RouterInterface        $router,
-                                private GetGoogleUser          $getGoogleUser)
+    public function __construct(private ClientRegistry  $clientRegistry,
+                                private RouterInterface $router,
+                                )
     {
     }
 
@@ -31,7 +32,7 @@ class OAuthGoogleAuthenticator extends OAuth2Authenticator
      */
     public function supports(Request $request): ?bool
     {
-        return $request->attributes->get('_route') === 'google_auth';
+        return $request->attributes->get('_route') === 'connect_github_check';
     }
 
     /**
@@ -40,12 +41,33 @@ class OAuthGoogleAuthenticator extends OAuth2Authenticator
      */
     public function authenticate(Request $request): PassportInterface
     {
-        $client = $this->clientRegistry->getClient('google');
+        $client = $this->clientRegistry->getClient('github:');
         $accessToken = $this->fetchAccessToken($client);
         return new SelfValidatingPassport(
             new UserBadge((string)$accessToken,
                 function () use ($accessToken, $client) {
-                    return $this->getGoogleUser->getUser($accessToken, $client);
+//                    return $this->getGoogleUser->getUser($accessToken, $client);
+                    $githubUser = $client->fetchUserFromToken($accessToken);
+                    $email = $githubUser->getEmail();
+                    var_dump($githubUser);
+//                    $existingUser = $this->userRepository->findOneByGithubClientId($githubUser->getId());
+//                    if ($existingUser) {
+//                        return $existingUser;
+//                    }
+//                    $user = $this->userRepository->findOneByEmail($email);
+//                    if ($user) {
+//                        $user->setGoogleClientId($githubUser->getId());
+//
+//
+//                    } else {
+//                        $user = new User();
+//                        $user->setGithubClientId($githubUser->getId());
+//                        $user->setEmail($email);
+//                        $user->setName($githubUser->getName());
+//                    }
+//                    $this->entityManager->persist($user);
+//                    $this->entityManager->flush();
+//                    return $user;
                 }),
         );
     }
@@ -54,15 +76,16 @@ class OAuthGoogleAuthenticator extends OAuth2Authenticator
      * @param Request $request
      * @param TokenInterface $token
      * @param string $firewallName
-     * @return Response|null
+     * @return RedirectResponse
      */
     public
-    function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+    function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): RedirectResponse
     {
 
         $targetUrl = $this->router->generate('main');
         return new RedirectResponse($targetUrl);
     }
+
     /**
      * @param Request $request
      * @param AuthenticationException $exception
@@ -75,9 +98,3 @@ class OAuthGoogleAuthenticator extends OAuth2Authenticator
         return new Response($message, Response::HTTP_FORBIDDEN);
     }
 }
-
-
-
-
-
-

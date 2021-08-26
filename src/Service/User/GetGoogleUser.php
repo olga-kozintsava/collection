@@ -29,11 +29,11 @@ class GetGoogleUser
         }
         $user = $this->userRepository->findOneByEmail($googleUser->getEmail());
         if ($user) {
-            $this->googleIdUpdate->update($user, $googleUser->getId());
+            return $this->googleIdUpdate->update($user, $googleUser->getId());
         } else {
-            $this->authCreate->create($googleUser);
+            return $this->authCreate->create($googleUser);
         }
-        return $user;
+
 
     }
 }

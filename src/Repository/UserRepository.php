@@ -55,4 +55,13 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findOneByGithubClientId($value): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.githubClientId = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }

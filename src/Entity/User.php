@@ -74,7 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
      */
-    private ?string $githubClientId;
+    private ?int $githubClientId;
 
     public function __construct()
     {
@@ -161,7 +161,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->email;
     }
@@ -265,12 +265,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getGithubClientId(): ?string
+    public function getGithubClientId(): ?int
     {
         return $this->githubClientId;
     }
 
-    public function setGithubClientId(?string $githubClientId): self
+    public function setGithubClientId(?int $githubClientId): self
     {
         $this->githubClientId = $githubClientId;
 

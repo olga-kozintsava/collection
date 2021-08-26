@@ -72,7 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $likes;
 
     /**
-     * @ORM\Column(type="string", length=191, nullable=true)
+     * @ORM\Column(type="integer",  nullable=true)
      */
     private ?int $githubClientId;
 

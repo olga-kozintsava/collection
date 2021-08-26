@@ -27,7 +27,7 @@ class HomeController extends AbstractController
         $lastUser = $authenticationUtils->getLastUsername();
         $lastItems = $this->itemRepository->findByLastAdded();
         $maxItemCategory = $this->categoryRepository->findByMaxItem();
-        return $this->render('main.html.twig',
+        return $this->render('main/main.html.twig',
             ['lastItems' => $lastItems,
                 'maxItemCategory' => $maxItemCategory
 

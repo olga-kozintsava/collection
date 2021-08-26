@@ -1,0 +1,18 @@
+<h3>Collections with the largest number of items</h3>
+<div class="d-flex flex-row mb-lg-4">
+    {% for category in maxItemCategory %}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body t-1">
+                <h5 class="card-title">{{ category.title }} </h5>
+                <h6 class="card-subtitle mb-2 text-muted"></h6>
+                <b>{{ category.ItemCount }}</b> items
+                <a href="{{ path('category_show',{'id':category.id}) }}"
+                   class="btn btn-dark">Show</a>
+            </div>
+        </div>
+    {% else %}
+        <div>
+            <h4>No collections</h4>
+        </div>
+    {% endfor %}
+</div>

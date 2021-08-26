@@ -12,9 +12,7 @@ class UserLoginController extends AbstractController
 {
     /**
      * @Route("/login", name="form_login", methods={"POST", "GET"})
-     *
      * @param AuthenticationUtils $authenticationUtils
-     *
      * @return Response
      */
     public function formLoginAction(AuthenticationUtils $authenticationUtils): Response

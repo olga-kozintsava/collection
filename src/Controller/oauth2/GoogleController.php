@@ -14,11 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class GoogleController extends AbstractController
 {
     /**
+     * @Route("/connect/google", name="connect_google_start")
      * @param ClientRegistry $clientRegistry
-     *
      * @return RedirectResponse
      *
-     * @Route("/connect/google", name="connect_google_start")
      */
     public function redirectToGoogleConnect(ClientRegistry $clientRegistry): RedirectResponse
     {
@@ -31,8 +30,6 @@ class GoogleController extends AbstractController
 
     /**
      * @Route("/google/auth", name="google_auth")
-     *
-     *
      */
     public function connectGoogleCheck()
     {

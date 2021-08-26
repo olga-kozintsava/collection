@@ -6,7 +6,7 @@
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
     <h3>Login</h3>
-                <form action="{{ path('form_login') }}" method="post">
+                <form action="{{ path('form_login') }}" method="post" class="mb-3">
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" name="_username" value="{{ last_username }}"/>
@@ -17,15 +17,16 @@
                         <input type="password" class="form-control" name="_password">
                     </div>
                     <input type="hidden" name="_csrf_token"
-                           value="{{ csrf_token('authenticate') }}"
-                    >
+                           value="{{ csrf_token('authenticate') }}">
                     <div class="mb3">
                         <button type="submit" class="btn btn-block btn-dark ">Login</button>
                     </div>
 
                 </form>
-            </div>
-        </div>
+    <h4>Or</h4>
+    <div class="d-flex justify-content-between mt-3">
+        <a class="btn btn-success" href="{{ path('connect_google_start') }}">Login with Google</a>
+        <a class="btn btn-dark" href="{{ path('user_registration') }}">Create new account</a>
     </div>
 
 {% endblock %}

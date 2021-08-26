@@ -11,12 +11,17 @@ use Symfony\Component\PasswordHasher\PasswordHasherInterface;
 
 class UserCreator
 {
-private PasswordHasherInterface $passwordHasher;
-public function __construct(PasswordHasherFactoryInterface $hasherFactory)
-{
-    $this->passwordHasher = $hasherFactory->getPasswordHasher(User::class);
-}
+    private PasswordHasherInterface $passwordHasher;
 
+    public function __construct(PasswordHasherFactoryInterface $hasherFactory)
+    {
+        $this->passwordHasher = $hasherFactory->getPasswordHasher(User::class);
+    }
+    /**
+
+     * @param UserRegistrationData $data
+     * @return User
+     */
     public function create(UserRegistrationData $data): User
     {
         $encodedPassword = $this->passwordHasher->hash($data->password);

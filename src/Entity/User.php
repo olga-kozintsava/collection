@@ -21,19 +21,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-//    /**
-//     * @param string $name
-//     * @param string $email
-//     * @param string $password
-//     */
-//    public function __construct(string $name, string $email, string $password){
-//
-//        $this->name = $name;
-//        $this->email = $email;
-//        $this->password = $password;
-//    }
-
-    public const ROLE_ADMIN = 'ROLE_ADMIN';
 
     private const ROLE_USER = 'ROLE_USER';
     /**
@@ -46,17 +33,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="string", length=191)
      */
-    private $name;
+    private ?string $name;
 
     /**
      * @ORM\Column(type="string", length=191, unique=true)
      */
-    private $email;
+    private string $email;
 
     /**
-     * @ORM\Column(type="string", length=191)
+     * @ORM\Column(type="string", length=191, nullable=true)
      */
-    private $password;
+    private ?string $password = null;
 
     /**
      *
@@ -67,17 +54,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @ORM\Column(type="json")
      */
-    private $role = [];
+    private array $roles = [];
 
     /**
      * @ORM\OneToMany(targetEntity=Category::class, mappedBy="user")
      */
-    private $categories;
+    private  $categories;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="user")
      */
-    private $comments;
+    private  $comments;
 
     /**
      * @ORM\OneToMany(targetEntity=Like::class, mappedBy="user")
@@ -146,25 +133,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRole(): array
-    {
-        return [self::ROLE_USER];
-    }
 
-    public function setRole(array $role): self
+    public function setRoles(array $role): self
     {
-        $this->role = $role;
+        $this->roles = $role;
 
         return $this;
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
-        $roles = $this->role;
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-//        return [self::ROLE_USER];
+        return [self::ROLE_USER];
     }
 
     public function getSalt()

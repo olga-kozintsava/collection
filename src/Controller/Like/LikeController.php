@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class LikeController extends AbstractController
 {
@@ -19,7 +20,7 @@ class LikeController extends AbstractController
 
     /**
      * @Route("item/{item_id}/like/add", name="like", methods={"POST"})
-     *
+     * @IsGranted("ROLE_USER")
      * @param int $item_id
      * @return Response
      */

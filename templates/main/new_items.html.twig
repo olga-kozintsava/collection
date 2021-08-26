@@ -1,0 +1,20 @@
+<h3>Last added items</h3>
+<div class="d-flex flex-row mb-lg-4">
+{% for item in lastItems %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body t-1">
+            <h5 class="card-title">{{ item.title }} </h5>
+            <h6 class="card-subtitle mb-2 text-muted"></h6>
+            {% for field in  item.itemCustomFields %}
+                <b>{{ field.field }}</b>
+                <p>{{ field.value }} </p>
+            {% endfor %}
+            <a href="{{ path('item_show',{'id':item.id}) }}" class="btn btn-dark">Show</a>
+        </div>
+    </div>
+{% else %}
+    <div>
+        <h4>No items</h4>
+    </div>
+{% endfor %}
+</div>

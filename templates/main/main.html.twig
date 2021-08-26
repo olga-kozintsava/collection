@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+{% block title %}Main{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row" style="margin-top:50px">
+            <div class="col">
+                {% include 'main/new_items.html.twig' with {
+                    'lastItems': lastItems} only %}
+                {% include 'main/max_collections.html.twig' with {
+                    'maxItemCategory': maxItemCategory} only %}
+            </div>
+        </div>
+    </div><
+{% endblock %}
+
+

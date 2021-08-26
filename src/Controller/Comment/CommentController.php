@@ -11,12 +11,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class CommentController extends AbstractController
 {
     /**
      * @Route("item/{id}/comment/add", name="comment_new", methods={"GET", "POST"})
-     *
+     *@IsGranted("ROLE_USER")
      * @param Request $request
      * @param int $id
      * @return Response

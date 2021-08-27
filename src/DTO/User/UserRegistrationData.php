@@ -23,7 +23,7 @@ class UserRegistrationData
      * @Assert\NotBlank
      * @Assert\Email(mode="strict")
      * @Assert\Type("string")
-     * @AcmeAssert\UniqueEmail
+     *
      *
      * @var string
      */

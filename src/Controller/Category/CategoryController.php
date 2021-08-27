@@ -23,7 +23,6 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/category/add", name="category_new", methods={"GET", "POST"})
-     *
      * @param Request $request
      * @param CategoryCreator $categoryCreator
      * @param FieldCreator $fieldCreator

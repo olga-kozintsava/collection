@@ -12,10 +12,7 @@ use Symfony\Component\Uid\Uuid;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-///**
-// * @ORM\Entity()
-// *
-// */
+
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  *

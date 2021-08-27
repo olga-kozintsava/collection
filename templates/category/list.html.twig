@@ -4,9 +4,9 @@
     <div class="container">
         <div class="row" style="margin-top:50px">
             <div class="col">
-{#                {{ app.user.id }}#}
-                <a href="{{ path('category_new') }}" class="btn btn-dark">Add new collection</a>
-{#                {% endif %}#}
+                {% if (is_granted('ROLE_USER') and  category.user.id == app.user.id) or is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('category_new') }}" class="btn btn-dark">Add new collection</a>
+                {% endif %}
                 <table class="table">
                     <thead>
                     <tr>
@@ -27,9 +27,11 @@
                             <td>{{ category.subject }}</td>
                             <td>{{ category.image }}</td>
                             <td><a href="{{ path('category_show',{'id':category.id}) }}" class="btn btn-dark">Show</a>
+                                {% if (is_granted('ROLE_USER') and  category.user.id == app.user.id) or is_granted('ROLE_ADMIN') %}
                                 <a href="{{ path('category_edit',{'id':category.id}) }}" class="btn btn-outline-dark">Edit</a>
                                 <a href="{{ path('category_delete',{'id':category.id}) }}"
                                    class="btn btn-danger">Delete</a></td>
+                            {% endif %}
                         </tr>
                     {% else %}
                         <div>No collection</div>
@@ -39,7 +41,6 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
 
 

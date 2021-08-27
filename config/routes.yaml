@@ -1,7 +1,3 @@
-admin:
-    path: /admin
-    controller: App\Controller\Admin\DashboardController::index
-
 #signup:
 #    path: /signup
 #    controller: App\Controller\User\UserRegistrationController::registrationUser

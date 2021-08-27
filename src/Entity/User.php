@@ -72,7 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $likes;
 
     /**
-     * @ORM\Column(type="string", length=191, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private ?int $githubClientId;
 
@@ -265,12 +265,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getGithubClientId(): ?string
+    public function getGithubClientId(): ?int
     {
         return $this->githubClientId;
     }
 
-    public function setGithubClientId(?string $githubClientId): self
+    public function setGithubClientId(?int $githubClientId): self
     {
         $this->githubClientId = $githubClientId;
 

@@ -20,10 +20,9 @@ class UserGithubCreate
     public function create($githubUser): User
     {
         $user = new User();
-        $id = (string)$githubUser->getId();
-        $user->setGithubClientId($id);
+        $user->setGithubClientId($githubUser->getId());
         $user->setName($githubUser->toArray()['login']);
-        $user->setEmail("{$id}@githuboauth.com");
+        $user->setEmail("{$githubUser->getId()}@githuboauth.com");
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         return $user;

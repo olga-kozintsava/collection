@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace App\DTO\User;
 
+use App\Validator as AcmeAssert;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-///**
-//*@UniqueEntity(
-// *     fields={"email"},
-// *     message="I think you're already registered!")
-//*/
 
 class UserRegistrationData
 {
@@ -28,6 +23,7 @@ class UserRegistrationData
      * @Assert\NotBlank
      * @Assert\Email(mode="strict")
      * @Assert\Type("string")
+     * @AcmeAssert\UniqueEmail
      *
      * @var string
      */

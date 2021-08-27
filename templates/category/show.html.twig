@@ -3,7 +3,9 @@
 {% block body %}
 <div class="container">
     <div>{{ category.title }}</div>
+    {% if (is_granted('ROLE_USER') and  category.user.id == app.user.id) or is_granted('ROLE_ADMIN')  %}
     <div><a href="{{ path('item_add',{'id':category.id}) }}" class="btn btn-dark">Add item</a></div>
+    {% endif %}
     <div class="container">
         <div class="row" style="margin-top:50px">
             <div class="col">
@@ -17,8 +19,10 @@
                                 <p>{{ field.value }} </p>
                             {% endfor %}
                             <a href="{{ path('item_show',{'id':item.id}) }}" class="btn btn-dark">Show</a>
+                            {% if (is_granted('ROLE_USER') and  category.user.id == app.user.id) or is_granted('ROLE_ADMIN')  %}
                             <a href="{{ path('item_delete',{'category_id':category.id, 'id':item.id}) }}"
                                class="btn btn-danger">Delete</a>
+                            {% endif %}
                         </div>
 
                     </div>

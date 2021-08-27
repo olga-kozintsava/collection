@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\User;
 
-
 use App\BusinessLogic\User\UserRegistrationHandler;
 use App\DTO\User\UserRegistrationData;
 use App\Form\Type\User\UserRegistrationType;

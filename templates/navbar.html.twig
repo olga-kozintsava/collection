@@ -5,7 +5,9 @@
     <div class=" d-flex justify-content-between p-2 bd-highlight" >
         <ul class=" navbar-nav me-4">
             <li class="nav-item ">
-                <a class="nav-link" href="{{ path('category_list') }}"> To my profile</a>
+                {% if is_granted('ROLE_USER') %}
+                <a class="nav-link" href="{{ path('category_list', {'userId':app.user.id}) }}"> {{ app.user.name }} profile</a>
+                {% endif %}
             </li>
         </ul>
         <div>

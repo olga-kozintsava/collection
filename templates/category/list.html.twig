@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row" style="margin-top:50px">
             <div class="col">
-                {% if (is_granted('ROLE_USER') and  category.user.id == app.user.id) or is_granted('ROLE_ADMIN') %}
+                {% if (is_granted('ROLE_USER') and  userId == app.user.id) or is_granted('ROLE_ADMIN') %}
                     <a href="{{ path('category_new') }}" class="btn btn-dark">Add new collection</a>
                 {% endif %}
                 <table class="table">

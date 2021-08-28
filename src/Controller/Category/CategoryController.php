@@ -38,7 +38,7 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $category = $categoryCreator->create($form, $user);
             $fieldCreator->create($form, $category);
-            return $this->redirectToRoute('category_list');
+            return $this->redirectToRoute('category_list', ['userId' => $this->getUser()->getId()]);
         }
         return $this->renderForm('category/add.html.twig', [
             'form' => $form,
@@ -47,17 +47,21 @@ class CategoryController extends AbstractController
 
     /**
      * @IsGranted("ROLE_USER")
-     * @Route("/category", name="category_list", methods={"GET"})
+     * @Route("/category/list/{userId}", name="category_list", methods={"GET"})
+     * @param int $userId
      * @param CategoryRepository $categoryRepository
      * @return Response
      */
-    public function showList(CategoryRepository $categoryRepository): Response
+    public function showList(int $userId, CategoryRepository $categoryRepository): Response
     {
-        $id = $this->getUser()->getId();
+       // $id = $this->getUser()->getId();
         $category = $categoryRepository
-            ->findByUserId($id);
+            ->findByUserId($userId);
 
-        return $this->render('category/list.html.twig', ['categoryList' => $category]);
+        return $this->render('category/list.html.twig', [
+            'categoryList' => $category,
+            'userId' =>$userId
+        ]);
     }
 
     /**
@@ -86,7 +90,7 @@ class CategoryController extends AbstractController
     public function delete(int $id, CategoryDelete $categoryDelete): Response
     {
         $categoryDelete->delete($id);
-        return $this->redirectToRoute('category_list');
+        return $this->redirectToRoute('category_list', ['userId' => $this->getUser()->getId()]);
     }
 
     /**
@@ -103,7 +107,7 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('category_list');
+            return $this->redirectToRoute('category_list',['userId' => $this->getUser()->getId()]);
         }
 
         return $this->renderForm('category/edit.html.twig', [

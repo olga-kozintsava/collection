@@ -139,9 +139,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 
-    public function setRoles(array $role): self
+    public function setRoles(string $role): self
     {
-        $this->roles = $role;
+     //   $this->roles = $role;
+        $this->roles[] =$role;
 
         return $this;
     }
@@ -151,7 +152,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 //        return [self::ROLE_USER];
         $roles = $this->roles;
         $roles[] = 'ROLE_USER';
-        return array_unique($roles);
+        return $roles;
     }
 
     public function getSalt()

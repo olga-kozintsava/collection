@@ -60,7 +60,7 @@ class ItemType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-       $resolver->setRequired('fields');
+    //   $resolver->setRequired('fields');
         $resolver->setDefaults([
             'data_class' => Item::class,
         ]);

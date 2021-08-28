@@ -34,11 +34,11 @@ class CategoryController extends AbstractController
         $user = $this->getUser();
         $form = $this->createForm(AddCategoryType::class, $category);
         $form->handleRequest($request);
-//        $f = $form->get('field')->getData();
         if ($form->isSubmitted() && $form->isValid()) {
+
             $category = $categoryCreator->create($form, $user);
-//            $fieldCreator->create($form, $category);
-            return $this->redirectToRoute('category_list', ['userId' => $this->getUser()->getId()]);
+////            $fieldCreator->create($form, $category);
+                    return $this->redirectToRoute('category_list', ['userId' => $this->getUser()->getId()]);
         }
         return $this->renderForm('category/add.html.twig', [
             'form' => $form,
@@ -54,13 +54,13 @@ class CategoryController extends AbstractController
      */
     public function showList(int $userId, CategoryRepository $categoryRepository): Response
     {
-       // $id = $this->getUser()->getId();
+        // $id = $this->getUser()->getId();
         $category = $categoryRepository
             ->findByUserId($userId);
 
         return $this->render('category/list.html.twig', [
             'categoryList' => $category,
-            'userId' =>$userId
+            'userId' => $userId
         ]);
     }
 
@@ -107,7 +107,7 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('category_list',['userId' => $this->getUser()->getId()]);
+            return $this->redirectToRoute('category_list', ['userId' => $this->getUser()->getId()]);
         }
 
         return $this->renderForm('category/edit.html.twig', [

@@ -59,9 +59,15 @@ class Category
      */
     private $items;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=CustomField::class, inversedBy="categories", cascade={"persist"})
+     */
+    private $customField;
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
+        $this->customField = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -167,6 +173,32 @@ class Category
                 $item->setCategory(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CustomField[]
+     */
+    public function getCustomField(): Collection
+    {
+        return $this->customField;
+    }
+
+    public function addCustomField(CustomField $customField): self
+    {
+//        $customField->addCategory($this);
+//        $this->customField->add( $customField);
+        if (!$this->customField->contains($customField)) {
+            $this->customField[] = $customField;
+        }
+
+        return $this;
+    }
+
+    public function removeCustomField(CustomField $customField): self
+    {
+        $this->customField->removeElement($customField);
 
         return $this;
     }

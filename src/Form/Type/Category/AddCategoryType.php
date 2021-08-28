@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Form\Type\Category;
 
-
 use App\DTO\User\UserRegistrationData;
 use App\Entity\Category;
 use App\Form\Type\CustomField\CustomFieldType;
@@ -42,9 +41,8 @@ class AddCategoryType extends AbstractType
                     'Сoins' => 'Coins',
                 ],
                 'attr' => ['class' => 'form-control']])
-            ->add('field',  CollectionType::class, [
+            ->add('customField',  CollectionType::class, [
                 'entry_type' =>CustomFieldType ::class,
-                'mapped' => false,
                 'required' => false,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,

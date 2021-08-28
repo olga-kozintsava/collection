@@ -52,7 +52,7 @@ class ItemController extends AbstractController
             //var_dump($form->getData()->getTag());
            // var_dump($form->getData());
             $item = $this->itemCreate->create($form, $id);
-            $this->itemCustomFieldCreate->create($form, $id, $item);
+          //  $this->itemCustomFieldCreate->create($form, $id, $item);
             return $this->redirectToRoute('category_show', ['id' => $id]);
         }
         return $this->renderForm('item/add.html.twig', [

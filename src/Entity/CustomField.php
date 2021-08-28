@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CustomFieldRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Category;
 
@@ -22,11 +24,17 @@ class CustomField
      * @ORM\Column(type="string", length=191, nullable=true)
      */
     private ?string $title;
+
     /**
-    *@ORM\Column(type="integer")
-     *
+     * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="customField")
      */
-    private int $category;
+    private $categories;
+
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
+
 
 
     public function getId(): ?int
@@ -46,15 +54,35 @@ class CustomField
         return $this;
     }
 
-
-
-    public function getCategory(): int
+    /**
+     * @return Collection|Category[]
+     */
+    public function getCategories(): Collection
     {
-        return $this->category;
+        return $this->categories;
     }
 
-    public function setCategory(int $category):void
+    public function addCategory(Category $category): self
     {
-        $this->category = $category;
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
+            $category->addCustomField($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Category $category): self
+    {
+        if ($this->categories->removeElement($category)) {
+            $category->removeCustomField($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->title;
     }
 }

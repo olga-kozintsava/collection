@@ -34,10 +34,10 @@ class CategoryController extends AbstractController
         $user = $this->getUser();
         $form = $this->createForm(AddCategoryType::class, $category);
         $form->handleRequest($request);
-        $f = $form->get('field')->getData();
+//        $f = $form->get('field')->getData();
         if ($form->isSubmitted() && $form->isValid()) {
             $category = $categoryCreator->create($form, $user);
-            $fieldCreator->create($form, $category);
+//            $fieldCreator->create($form, $category);
             return $this->redirectToRoute('category_list', ['userId' => $this->getUser()->getId()]);
         }
         return $this->renderForm('category/add.html.twig', [

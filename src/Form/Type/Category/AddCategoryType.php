@@ -10,6 +10,7 @@ use App\Entity\Category;
 use App\Form\Type\CustomField\CustomFieldType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\AbstractType;
@@ -41,8 +42,15 @@ class AddCategoryType extends AbstractType
                     'Сoins' => 'Coins',
                 ],
                 'attr' => ['class' => 'form-control']])
-            ->add('field', CustomFieldType::class, [
-                'mapped' => false])
+            ->add('field',  CollectionType::class, [
+                'entry_type' =>CustomFieldType ::class,
+                'mapped' => false,
+                'required' => false,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
+            ])
             ->add('add', SubmitType::class, [
                 'label' => 'Add',
                 'attr' => ['class' => 'btn btn-block btn-dark']

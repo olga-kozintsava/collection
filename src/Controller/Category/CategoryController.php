@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Category;
 
+use Exception;
 use App\Entity\Category;
 use App\Form\Type\Category\AddCategoryType;
 use App\Repository\CategoryRepository;
@@ -40,8 +41,9 @@ class CategoryController extends AbstractController
 ////            $fieldCreator->create($form, $category);
                     return $this->redirectToRoute('category_list', ['userId' => $this->getUser()->getId()]);
         }
-        return $this->renderForm('category/add.html.twig', [
+        return $this->renderForm('category/category_form.html.twig', [
             'form' => $form,
+            'button_text' => 'Add'
         ]);
     }
 
@@ -103,15 +105,21 @@ class CategoryController extends AbstractController
     public function edit(Request $request, int $id, CategoryRepository $categoryRepository): Response
     {
         $category = $categoryRepository->findOneById($id);
+        if (!$category) {
+            throw $this->notFoundException();
+        }
         $form = $this->createForm(AddCategoryType::class, $category);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $category = $form->getData();
+            $this->getDoctrine()->getManager()->persist($category);
             $this->getDoctrine()->getManager()->flush();
             return $this->redirectToRoute('category_list', ['userId' => $this->getUser()->getId()]);
         }
 
-        return $this->renderForm('category/edit.html.twig', [
+        return $this->renderForm('category/category_form.html.twig', [
             'form' => $form,
+            'button_text' => 'Update'
         ]);
     }
 }

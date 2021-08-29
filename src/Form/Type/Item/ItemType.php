@@ -36,7 +36,7 @@ class ItemType extends AbstractType
             ->add('tag', CollectionType::class, [
                 'entry_type' => TagType::class,
                 'required' => false,
-                'entry_options' => ['label' => false],
+                'label' => false,
                 'allow_add' => true,
                 'by_reference' => false,
                 'allow_delete' => true,
@@ -53,8 +53,6 @@ class ItemType extends AbstractType
                     $form->add($value->getTitle(), TextType::class, ['mapped' => false]);
                 }
             }
-
-
         });
     }
 

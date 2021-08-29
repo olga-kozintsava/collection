@@ -44,14 +44,11 @@ class AddCategoryType extends AbstractType
             ->add('customField',  CollectionType::class, [
                 'entry_type' =>CustomFieldType ::class,
                 'required' => false,
+                'label' => false,
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'by_reference' => false,
                 'allow_delete' => true,
-            ])
-            ->add('add', SubmitType::class, [
-                'label' => 'Add',
-                'attr' => ['class' => 'btn btn-block btn-dark']
             ]);
     }
 

@@ -14,7 +14,6 @@
                         <th scope="col">title</th>
                         <th scope="col">description</th>
                         <th scope="col">subject</th>
-                        <th scope="col">image</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -25,7 +24,6 @@
                             <td>{{ category.title }}</td>
                             <td>{{ category.description }}</td>
                             <td>{{ category.subject }}</td>
-                            <td>{{ category.image }}</td>
                             <td><a href="{{ path('category_show',{'id':category.id}) }}" class="btn btn-dark">Show</a>
                                 {% if (is_granted('ROLE_USER') and  category.user.id == app.user.id) or is_granted('ROLE_ADMIN') %}
                                 <a href="{{ path('category_edit',{'id':category.id}) }}" class="btn btn-outline-dark">Edit</a>

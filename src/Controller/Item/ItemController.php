@@ -15,6 +15,7 @@ use App\Repository\ItemCustomFieldRepository;
 use App\Repository\ItemRepository;
 use App\Service\Item\ItemCreate;
 use App\Service\Item\ItemCustomFieldCreate;
+use App\Service\Item\ItemCustomFieldUpdate;
 use App\Service\Item\ItemDelete;
 use App\Service\Item\ItemFormCreate;
 use App\Service\like\LikeCount;
@@ -27,15 +28,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class ItemController extends AbstractController
 {
-    public function __construct(private ItemCustomFieldCreate     $itemCustomFieldCreate,
-                                private ItemRepository            $itemRepository,
-                                private ItemFormCreate            $itemFormCreate,
-                                private ItemDelete                $itemDelete,
-                                private CommentRepository         $commentRepository,
-                                private LikeCount                 $likeCount,
-                                private ItemCreate                $itemCreate,
-                                private SaveFormData              $saveFormData,
-                                private ItemCustomFieldRepository $itemCustomFieldRepository)
+    public function __construct(private ItemCustomFieldCreate $itemCustomFieldCreate,
+                                private ItemRepository        $itemRepository,
+                                private ItemFormCreate        $itemFormCreate,
+                                private ItemDelete            $itemDelete,
+                                private CommentRepository     $commentRepository,
+                                private LikeCount             $likeCount,
+                                private ItemCreate            $itemCreate,
+                                private SaveFormData          $saveFormData,
+                                private ItemCustomFieldUpdate $customFieldUpdate
+    )
     {
     }
 
@@ -75,13 +77,11 @@ class ItemController extends AbstractController
     public function edit(Request $request, int $category_id, int $id): Response
     {
         $item = $this->itemRepository->findOneById($id);
-        $fields = $this->itemCustomFieldRepository->findByItemId($id);
-        $form = $this->createForm(ItemType::class, $item, ['fields' => $fields]);
-        //     $form = $this->itemFormCreate->create($category_id, $item);
+        $form = $this->itemFormCreate->create($category_id, $item);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-        //    var_dump($form->getData());
             $this->saveFormData->save($form);
+            $this->customFieldUpdate->update($form, $id);
             return $this->redirectToRoute('category_show', ['id' => $category_id]);
         }
         return $this->renderForm('item/add.html.twig', [

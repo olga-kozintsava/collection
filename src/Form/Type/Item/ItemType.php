@@ -7,6 +7,7 @@ namespace App\Form\Type\Item;
 use App\Entity\CustomField;
 use App\Form\Type\Category\AddCategoryType;
 use App\Entity\Item;
+use App\Form\Type\ItemCustomField\ItemCustomFieldType;
 use App\Form\Type\Tag\TagType;
 use App\Repository\CustomFieldRepository;
 use Symfony\Component\Form\AbstractType;
@@ -44,7 +45,7 @@ class ItemType extends AbstractType
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $fields = $event->getForm()->getConfig()->getOptions()['fields'];
             $form = $event->getForm();
-            if (!is_null($fields)){
+            if (!is_null($fields)) {
                 foreach ($fields as $value) {
                     $form->add($value->getTitle(), TextType::class, ['mapped' => false]);
                 }
@@ -54,7 +55,7 @@ class ItemType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-       $resolver->setRequired('fields');
+        $resolver->setRequired('fields');
         $resolver->setDefaults([
             'data_class' => Item::class,
         ]);

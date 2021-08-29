@@ -27,6 +27,7 @@ class CustomField
 
     /**
      * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="customField")
+     * @ORM\JoinTable(name="categories_")
      */
     private $categories;
 
@@ -64,6 +65,9 @@ class CustomField
 
     public function addCategory(Category $category): self
     {
+//        if (!$this->categories->contains($category)) {
+//            $this->categories->add($category);
+//        }
         if (!$this->categories->contains($category)) {
             $this->categories[] = $category;
             $category->addCustomField($this);

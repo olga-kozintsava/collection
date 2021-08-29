@@ -25,8 +25,8 @@ class ItemFormCreate extends AbstractController
     public function create(int $id):FormInterface
     {
         $item = new Item();
-     //   $fields = $this->customFieldRepository->findByCategory($id);
-      //  return $this->createForm(ItemType::class, $item, ['fields'=> $fields ]);
-        return $this->createForm(ItemType::class, $item);
+        $fields = $this->customFieldRepository->findByCategory($id);
+        return $this->createForm(ItemType::class, $item, ['fields'=> $fields ]);
+//        return $this->createForm(ItemType::class, $item);
     }
 }

@@ -23,17 +23,25 @@ class CustomFieldRepository extends ServiceEntityRepository
     //  * @return CustomField[] Returns an array of CustomField objects
     //  */
 
+//    public function findByCategory($value)
+//    {
+//        return $this->createQueryBuilder('c')
+//            ->andWhere('c.category = :val')
+//            ->setParameter('val', $value)
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
+
     public function findByCategory($value)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.category = :val')
+            ->leftJoin('c.categories', 'f')
+            ->andWhere('f.id = :val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getResult()
-        ;
+            ->getResult();
     }
-
-
     /*
     public function findOneBySomeField($value): ?CustomField
     {

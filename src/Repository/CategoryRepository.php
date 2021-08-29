@@ -56,10 +56,9 @@ class CategoryRepository extends ServiceEntityRepository
             ->setMaxResults(5)
             ->getQuery()
             ->getResult();
-
-
-
     }
+
+
     //SELECT
     //    c.category_name, COUNT(p.category_id) AS product_count
     //FROM

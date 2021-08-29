@@ -40,10 +40,6 @@ class ItemType extends AbstractType
                 'allow_add' => true,
                 'by_reference' => false,
                 'allow_delete' => true,
-            ])
-            ->add('add', SubmitType::class, [
-                'label' => 'Add',
-                'attr' => ['class' => 'btn btn-block btn-dark']
             ]);
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
             $fields = $event->getForm()->getConfig()->getOptions()['fields'];

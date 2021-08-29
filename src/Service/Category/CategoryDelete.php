@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Service\Category;
 
-
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,12 +24,12 @@ class CategoryDelete
      */
     public function delete($id): Response
     {
-       $category = $this->categoryRepository->findOneById($id);
-       if (!is_null($category)){
-           new JsonResponse(['status' => 'error']);
-       }
-       $this->entityManager->remove($category);
+        $category = $this->categoryRepository->findOneById($id);
+        if (!is_null($category)) {
+            new JsonResponse(['status' => 'error']);
+        }
+        $this->entityManager->remove($category);
         $this->entityManager->flush();
-       return new JsonResponse(['status' => 'ok']);
+        return new JsonResponse(['status' => 'ok']);
     }
 }

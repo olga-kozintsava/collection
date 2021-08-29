@@ -30,7 +30,7 @@ class ItemCustomFieldCreate
         $fields = $this->customFieldRepository->findByCategory($id);
         foreach ($fields as $value) {
             $itemCustomField = new ItemCustomField();
-            $itemCustomField->setField($value->getTitle());
+            $itemCustomField->setTitle($value->getTitle());
             $itemCustomField->setValue($form->get($value->getTitle())->getData());
             $itemCustomField->setItem($item);
             $this->entityManager->persist($itemCustomField);

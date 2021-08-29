@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Category;
 
+use App\Service\SaveFormData;
 use Exception;
 use App\Entity\Category;
 use App\Form\Type\Category\AddCategoryType;
@@ -21,24 +22,25 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class CategoryController extends AbstractController
 {
+    public function __construct(private SaveFormData $saveFormData,
+    )
+    {
+    }
 
     /**
      * @Route("/category/add", name="category_new", methods={"GET", "POST"})
      * @param Request $request
      * @param CategoryCreator $categoryCreator
-     * @param FieldCreator $fieldCreator
      * @return Response
      */
-    public function add(Request $request, CategoryCreator $categoryCreator, FieldCreator $fieldCreator): Response
+    public function add(Request $request, CategoryCreator $categoryCreator): Response
     {
         $category = new Category();
         $user = $this->getUser();
         $form = $this->createForm(AddCategoryType::class, $category);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $category = $categoryCreator->create($form, $user);
-////            $fieldCreator->create($form, $category);
                     return $this->redirectToRoute('category_list', ['userId' => $this->getUser()->getId()]);
         }
         return $this->renderForm('category/category_form.html.twig', [
@@ -56,7 +58,6 @@ class CategoryController extends AbstractController
      */
     public function showList(int $userId, CategoryRepository $categoryRepository): Response
     {
-        // $id = $this->getUser()->getId();
         $category = $categoryRepository
             ->findByUserId($userId);
 
@@ -76,7 +77,6 @@ class CategoryController extends AbstractController
     {
         $category = $categoryRepository->findOneById($id);
         $items = $itemRepository->findByCategory($category);
-
         return $this->render('category/show.html.twig', [
             'category' => $category,
             'items' => $items
@@ -105,18 +105,12 @@ class CategoryController extends AbstractController
     public function edit(Request $request, int $id, CategoryRepository $categoryRepository): Response
     {
         $category = $categoryRepository->findOneById($id);
-        if (!$category) {
-            throw $this->notFoundException();
-        }
         $form = $this->createForm(AddCategoryType::class, $category);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $category = $form->getData();
-            $this->getDoctrine()->getManager()->persist($category);
-            $this->getDoctrine()->getManager()->flush();
+            $this->saveFormData->save($form);
             return $this->redirectToRoute('category_list', ['userId' => $this->getUser()->getId()]);
         }
-
         return $this->renderForm('category/category_form.html.twig', [
             'form' => $form,
             'button_text' => 'Update'

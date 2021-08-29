@@ -22,19 +22,17 @@ class ItemCustomFieldRepository extends ServiceEntityRepository
     // /**
     //  * @return ItemCustomField[] Returns an array of ItemCustomField objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function findByItemId($value)
     {
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
+            ->andWhere('i.item = :val')
             ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?ItemCustomField

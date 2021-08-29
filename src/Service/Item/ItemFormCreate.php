@@ -20,13 +20,13 @@ class ItemFormCreate extends AbstractController
     /**
      *
      * @param int $id
+     * @param Item $item
      * @return FormInterface
      */
-    public function create(int $id):FormInterface
+    public function create(int $id, Item $item):FormInterface
     {
-        $item = new Item();
         $fields = $this->customFieldRepository->findByCategory($id);
         return $this->createForm(ItemType::class, $item, ['fields'=> $fields ]);
-//        return $this->createForm(ItemType::class, $item);
+
     }
 }

@@ -22,7 +22,7 @@ class ItemCustomField
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
      */
-    private $field;
+    private $title;
 
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
@@ -42,14 +42,14 @@ class ItemCustomField
         return $this->id;
     }
 
-    public function getField(): ?string
+    public function getTitle(): ?string
     {
-        return $this->field;
+        return $this->title;
     }
 
-    public function setField(?string $field): self
+    public function setTitle(?string $title): self
     {
-        $this->field = $field;
+        $this->title = $title;
 
         return $this;
     }

@@ -11,12 +11,14 @@ use App\Form\Type\Item\ItemType;
 use App\Repository\CategoryRepository;
 use App\Repository\CommentRepository;
 use App\Repository\CustomFieldRepository;
+use App\Repository\ItemCustomFieldRepository;
 use App\Repository\ItemRepository;
 use App\Service\Item\ItemCreate;
 use App\Service\Item\ItemCustomFieldCreate;
 use App\Service\Item\ItemDelete;
 use App\Service\Item\ItemFormCreate;
 use App\Service\like\LikeCount;
+use App\Service\SaveFormData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,20 +27,21 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class ItemController extends AbstractController
 {
-    public function __construct(private ItemCustomFieldCreate $itemCustomFieldCreate,
-                                private ItemRepository        $itemRepository,
-                                private ItemFormCreate        $itemFormCreate,
-                                private ItemDelete            $itemDelete,
-                                private CommentRepository     $commentRepository,
-                                private LikeCount             $likeCount,
-                                private ItemCreate            $itemCreate,
-                                private CustomFieldRepository $customFieldRepository)
+    public function __construct(private ItemCustomFieldCreate     $itemCustomFieldCreate,
+                                private ItemRepository            $itemRepository,
+                                private ItemFormCreate            $itemFormCreate,
+                                private ItemDelete                $itemDelete,
+                                private CommentRepository         $commentRepository,
+                                private LikeCount                 $likeCount,
+                                private ItemCreate                $itemCreate,
+                                private SaveFormData              $saveFormData,
+                                private ItemCustomFieldRepository $itemCustomFieldRepository)
     {
     }
 
     /**
      * @Route("/{id}/item/add", name="item_add", methods={"GET", "POST"})
-     *@IsGranted("ROLE_USER")
+     * @IsGranted("ROLE_USER")
      * @param Request $request
      * @param int $id
      * @return Response
@@ -46,23 +49,49 @@ class ItemController extends AbstractController
     public
     function add(Request $request, int $id): Response
     {
-        $form = $this->itemFormCreate->create($id);
+        $item = new Item();
+        $form = $this->itemFormCreate->create($id, $item);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            //var_dump($form->getData()->getTag());
-           // var_dump($form->getData());
             $item = $this->itemCreate->create($form, $id);
             $this->itemCustomFieldCreate->create($form, $id, $item);
             return $this->redirectToRoute('category_show', ['id' => $id]);
         }
         return $this->renderForm('item/add.html.twig', [
-            'form' => $form
+            'form' => $form,
+            'button_text' => 'Add'
+        ]);
+    }
+
+
+    /**
+     * @Route("{category_id}/item/edit/{id}", name="item_edit")
+     *
+     * @param Request $request
+     * @param int $category_id
+     * @param int $id
+     * @return Response
+     */
+    public function edit(Request $request, int $category_id, int $id): Response
+    {
+        $item = $this->itemRepository->findOneById($id);
+        $fields = $this->itemCustomFieldRepository->findByItemId($id);
+        $form = $this->createForm(ItemType::class, $item, ['fields' => $fields]);
+        //     $form = $this->itemFormCreate->create($category_id, $item);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+        //    var_dump($form->getData());
+            $this->saveFormData->save($form);
+            return $this->redirectToRoute('category_show', ['id' => $category_id]);
+        }
+        return $this->renderForm('item/add.html.twig', [
+            'form' => $form,
+            'button_text' => 'Update'
         ]);
     }
 
     /**
      * @Route("/item/{id}", name="item_show", methods={"GET"})
-     *
      * @param int $id
      * @return Response
      */
@@ -81,7 +110,6 @@ class ItemController extends AbstractController
 
     /**
      * @Route("{category_id}/item/delete/{id}", name="item_delete")
-     *
      * @param int $category_id
      * @param int $id
      * @return Response

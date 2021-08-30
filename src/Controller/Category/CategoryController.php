@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Category;
 
+use App\BusinessLogic\Category\CategoryHandler;
 use App\Service\SaveFormData;
 use App\Entity\Category;
 use App\Form\Type\Category\AddCategoryType;
@@ -11,6 +12,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\ItemRepository;
 use App\Service\Category\CategoryCreator;
 use App\Service\Category\CategoryDelete;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +22,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class CategoryController extends AbstractController
 {
     public function __construct(private SaveFormData       $saveFormData,
-                                private CategoryCreator    $categoryCreator,
+                                private CategoryHandler $handler,
                                 private CategoryRepository $categoryRepository,
                                 private ItemRepository     $itemRepository,
                                 private CategoryDelete     $categoryDelete)
@@ -32,6 +34,7 @@ class CategoryController extends AbstractController
      * @Route("/category/add", name="category_new", methods={"GET", "POST"})
      * @param Request $request
      * @return Response
+     * @throws Exception
      */
     public function add(Request $request,): Response
     {
@@ -40,7 +43,7 @@ class CategoryController extends AbstractController
         $form = $this->createForm(AddCategoryType::class, $category);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->categoryCreator->create($form, $user);
+            $this->handler->handle($form->getData(), $user);
             return $this->redirectToRoute('category_list', ['userId' => $user->getId()]);
         }
         return $this->renderForm('category/form.html.twig', [
@@ -54,6 +57,7 @@ class CategoryController extends AbstractController
      * @Route("/category/list/{userId}", name="category_list", methods={"GET"})
      * @param int $userId
      * @return Response
+     * @throws Exception
      */
     public function showList(int $userId): Response
     {
@@ -98,6 +102,7 @@ class CategoryController extends AbstractController
      * @param Request $request
      * @param int $id
      * @return Response
+     * @throws Exception
      */
     public function edit(Request $request, int $id): Response
     {

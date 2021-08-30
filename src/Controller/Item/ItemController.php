@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Item;
 
+use App\BusinessLogic\Item\ItemHandler;
 use App\Entity\Item;
 use App\Repository\CommentRepository;
 use App\Repository\ItemRepository;
@@ -14,6 +15,7 @@ use App\Service\Item\ItemDelete;
 use App\Service\Item\ItemFormCreate;
 use App\Service\like\LikeCount;
 use App\Service\SaveFormData;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,15 +24,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class ItemController extends AbstractController
 {
-    public function __construct(private ItemCustomFieldCreate $itemCustomFieldCreate,
-                                private ItemRepository        $itemRepository,
-                                private ItemFormCreate        $itemFormCreate,
-                                private ItemDelete            $itemDelete,
-                                private CommentRepository     $commentRepository,
-                                private LikeCount             $likeCount,
-                                private ItemCreate            $itemCreate,
-                                private SaveFormData          $saveFormData,
-                                private ItemCustomFieldUpdate $customFieldUpdate)
+    public function __construct(
+        private ItemRepository        $itemRepository,
+        private ItemFormCreate        $itemFormCreate,
+        private ItemDelete            $itemDelete,
+        private CommentRepository     $commentRepository,
+        private LikeCount             $likeCount,
+        private ItemHandler           $handler,
+        private SaveFormData          $saveFormData,
+        private ItemCustomFieldUpdate $customFieldUpdate)
     {
     }
 
@@ -40,6 +42,7 @@ class ItemController extends AbstractController
      * @param Request $request
      * @param int $id
      * @return Response
+     * @throws Exception
      */
     public function add(Request $request, int $id): Response
     {
@@ -47,8 +50,7 @@ class ItemController extends AbstractController
         $form = $this->itemFormCreate->create($id, $item);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $item = $this->itemCreate->create($form, $id);
-            $this->itemCustomFieldCreate->create($form, $id, $item);
+            $this->handler->handle($form, $id);
             return $this->redirectToRoute('category_show', ['id' => $id]);
         }
         return $this->renderForm('item/add.html.twig', [
@@ -65,6 +67,7 @@ class ItemController extends AbstractController
      * @param int $category_id
      * @param int $id
      * @return Response
+     * @throws Exception
      */
     public function edit(Request $request, int $category_id, int $id): Response
     {

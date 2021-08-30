@@ -10,24 +10,17 @@ use App\Entity\User;
 
 class CategoryCreator
 {
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
-    }
-
     /**
-     *
-     * @param $form
-     * @param $user
+     * @param $data
+     * @param User $user
      * @return Category
      */
 
-    public function create($form, $user): Category
+    public function create($data, User $user): Category
     {
-        $category = $form->getData();
+        $category = $data;
         $category->setDate();
         $category->setUser($user);
-        $this->entityManager->persist($category);
-        $this->entityManager->flush();
         return $category;
     }
 }

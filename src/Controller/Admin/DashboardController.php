@@ -15,16 +15,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class DashboardController extends AbstractDashboardController
 {
+//@IsGranted("ROLE_ADMIN")
     /**
      * @Route("/admin", name="admin")
-     * @IsGranted("ROLE_ADMIN")
      * @return Response
       */
     public function index(): Response
     {
         $routeBuilder = $this->get(AdminUrlGenerator::class);
         return $this->redirect($routeBuilder->setController(UserCrudController::class)->generateUrl());
-
     }
 
     /**

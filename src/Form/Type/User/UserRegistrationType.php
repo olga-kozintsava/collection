@@ -26,7 +26,10 @@ class UserRegistrationType extends AbstractType
             ->add('name', TextType::class)
             ->add('email', EmailType::class)
             ->add('password', PasswordType::class)
-            ->add('register', SubmitType::class, ['label' => 'Register']);
+            ->add('register', SubmitType::class, [
+                'label' => 'Register',
+                'attr' => ['class' => 'btn btn-block btn-dark']
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

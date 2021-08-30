@@ -20,10 +20,6 @@ class LikeRepository extends ServiceEntityRepository
         parent::__construct($registry, Like::class);
     }
 
-    // /**
-    //  * @return Like[] Returns an array of Like objects
-    //  */
-
     /**
      * @throws NonUniqueResultException
      */
@@ -52,16 +48,4 @@ class LikeRepository extends ServiceEntityRepository
 
 
     }
-
-    /*
-    public function findOneBySomeField($value): ?Like
-    {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

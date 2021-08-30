@@ -13,15 +13,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class GoogleController extends AbstractController
 {
+    public function __construct(private ClientRegistry $clientRegistry)
+    {
+    }
+
     /**
      * @Route("/connect/google", name="connect_google_start")
-     * @param ClientRegistry $clientRegistry
      * @return RedirectResponse
-     *
      */
-    public function redirectToGoogleConnect(ClientRegistry $clientRegistry): RedirectResponse
+    public function redirectToGoogleConnect(): RedirectResponse
     {
-        return $clientRegistry
+        return $this->clientRegistry
             ->getClient('google')
             ->redirect([
                 'email', 'profile'

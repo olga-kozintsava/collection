@@ -17,6 +17,8 @@ class Category
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
+     *
+     * @var int
      */
     private $id;
 
@@ -24,45 +26,51 @@ class Category
      * @Assert\NotBlank
      * @ORM\Column(type="string", length=191)
      */
-    public $title;
+    public string $title;
 
     /**
-     *
      * @ORM\Column(type="string", length=191, nullable=true)
+     *
+     * @var ?string
      */
-    public $description;
+    public ?string $description;
 
     /**
      * @Assert\NotBlank
      * @ORM\Column(type="string", length=191)
+     *
+     * @var string
      */
-    private $subject;
+    private string $subject;
 
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
+     *
+     * @var ?string
      */
-    private $image;
+    private ?string $image;
 
     /**
      * @ORM\Column(type="datetime")
+     *
      */
-    private $date;
+    private ?\DateTimeInterface $date;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="categories")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private $user;
+    private ?User $user;
 
     /**
      * @ORM\OneToMany(targetEntity=Item::class, mappedBy="category", orphanRemoval=true)
      */
-    private $items;
+    private  $items;
 
     /**
      * @ORM\ManyToMany(targetEntity=CustomField::class, inversedBy="categories", cascade={"persist"})
      */
-    private $customField;
+    private  $customField;
 
     public function __construct()
     {
@@ -148,7 +156,7 @@ class Category
     }
 
     /**
-     * @return Collection|Item[]
+     * @return Collection
      */
     public function getItems(): Collection
     {
@@ -178,7 +186,7 @@ class Category
     }
 
     /**
-     * @return Collection|CustomField[]
+     * @return Collection
      */
     public function getCustomField(): Collection
     {
@@ -187,8 +195,6 @@ class Category
 
     public function addCustomField(CustomField $customField): self
     {
-//        $customField->addCategory($this);
-//        $this->customField->add( $customField);
         if (!$this->customField->contains($customField)) {
             $this->customField[] = $customField;
         }

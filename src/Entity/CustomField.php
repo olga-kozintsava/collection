@@ -37,7 +37,6 @@ class CustomField
     }
 
 
-
     public function getId(): ?int
     {
         return $this->id;
@@ -56,7 +55,7 @@ class CustomField
     }
 
     /**
-     * @return Collection|Category[]
+     * @return Collection
      */
     public function getCategories(): Collection
     {
@@ -65,9 +64,6 @@ class CustomField
 
     public function addCategory(Category $category): self
     {
-//        if (!$this->categories->contains($category)) {
-//            $this->categories->add($category);
-//        }
         if (!$this->categories->contains($category)) {
             $this->categories[] = $category;
             $category->addCustomField($this);

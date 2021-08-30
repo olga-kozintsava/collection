@@ -20,10 +20,6 @@ class ItemRepository extends ServiceEntityRepository
         parent::__construct($registry, Item::class);
     }
 
-    // /**
-    //  * @return Item[] Returns an array of Item objects
-    //  */
-
     public function findByCategory($value)
     {
         return $this->createQueryBuilder('i')
@@ -34,7 +30,6 @@ class ItemRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
 
     public function findOneById($value): ?Item
     {

@@ -22,19 +22,18 @@ class ItemCustomField
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
      */
-    private $title;
+    private ?string $title;
 
     /**
      * @ORM\Column(type="string", length=191, nullable=true)
      */
-    private $value;
+    private ?string $value;
 
     /**
      * @ORM\ManyToOne(targetEntity=Item::class, inversedBy="itemCustomFields")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private $item;
-
+    private ?Item $item;
 
 
     public function getId(): ?int
@@ -78,8 +77,8 @@ class ItemCustomField
         return $this;
     }
 
-public function __toString(): string
-{
-    return $this->field . $this->value;
-}
+    public function __toString(): string
+    {
+        return $this->field . $this->value;
+    }
 }

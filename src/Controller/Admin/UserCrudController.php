@@ -16,17 +16,18 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 
 class UserCrudController extends AbstractCrudController
 {
-
+    /**
+     * @return string
+     */
     public static function getEntityFqcn(): string
     {
         return User::class;
     }
 
-//    public function createEntity(string $entityFqcn)
-//    {
-////        $this->userCreator->create();
-//    }
-
+    /**
+     * @param string $pageName
+     * @return iterable
+     */
     public function configureFields(string $pageName): iterable
     {
         return [
@@ -34,20 +35,18 @@ class UserCrudController extends AbstractCrudController
             TextField::new('password'),
             EmailField::new('email'),
             ArrayField::new('getRoles')
-//        'name',
-//            'email',
-//            'password',
-//            'roles'
-
         ];
     }
+
+    /**
+     * @param Actions $actions
+     * @return Actions
+     */
     public function configureActions(Actions $actions): Actions
     {
         return $actions
-            // ...
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->add(Crud::PAGE_EDIT, Action::SAVE_AND_ADD_ANOTHER)
-            ;
+            ->add(Crud::PAGE_EDIT, Action::SAVE_AND_ADD_ANOTHER);
     }
 
 }

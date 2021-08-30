@@ -15,23 +15,25 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class CommentController extends AbstractController
 {
+    public function __construct(private CommentCreator $commentCreator)
+    {
+    }
+
     /**
      * @Route("item/{id}/comment/add", name="comment_new", methods={"GET", "POST"})
-     *@IsGranted("ROLE_USER")
+     * @IsGranted("ROLE_USER")
      * @param Request $request
      * @param int $id
      * @return Response
      */
-    public function add(Request $request, int $id, CommentCreator $commentCreator): Response
+    public function add(Request $request, int $id): Response
     {
         $comment = new Comment();
         $user = $this->getUser();
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $commentCreator->create($form, $user, $id);
-
+            $this->commentCreator->create($form, $user, $id);
             return $this->redirectToRoute('item_show', ['id' => $id]);
         }
         return $this->renderForm('comment/add.html.twig', [

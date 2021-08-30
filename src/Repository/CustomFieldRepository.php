@@ -19,20 +19,6 @@ class CustomFieldRepository extends ServiceEntityRepository
         parent::__construct($registry, CustomField::class);
     }
 
-    // /**
-    //  * @return CustomField[] Returns an array of CustomField objects
-    //  */
-
-//    public function findByCategory($value)
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.category = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
     public function findByCategory($value)
     {
         return $this->createQueryBuilder('c')
@@ -42,15 +28,4 @@ class CustomFieldRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-    /*
-    public function findOneBySomeField($value): ?CustomField
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

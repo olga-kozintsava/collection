@@ -12,14 +12,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class GithubController extends AbstractController
 {
+    public function __construct(private ClientRegistry $clientRegistry)
+        {
+        }
+
     /**
      * @Route("/connect/github", name="connect_github_start")
-     * @param ClientRegistry $clientRegistr
      * @return RedirectResponse
      */
-    public function connectGithubAction(ClientRegistry $clientRegistry): RedirectResponse
+    public function connectGithubAction(): RedirectResponse
     {
-        return $clientRegistry
+        return $this->clientRegistry
             ->getClient('github')
             ->redirect([
                 'user:email'

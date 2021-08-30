@@ -4,14 +4,8 @@ declare(strict_types=1);
 
 namespace App\Controller\Item;
 
-use App\Entity\Category;
 use App\Entity\Item;
-use App\Entity\Tag;
-use App\Form\Type\Item\ItemType;
-use App\Repository\CategoryRepository;
 use App\Repository\CommentRepository;
-use App\Repository\CustomFieldRepository;
-use App\Repository\ItemCustomFieldRepository;
 use App\Repository\ItemRepository;
 use App\Service\Item\ItemCreate;
 use App\Service\Item\ItemCustomFieldCreate;
@@ -36,8 +30,7 @@ class ItemController extends AbstractController
                                 private LikeCount             $likeCount,
                                 private ItemCreate            $itemCreate,
                                 private SaveFormData          $saveFormData,
-                                private ItemCustomFieldUpdate $customFieldUpdate
-    )
+                                private ItemCustomFieldUpdate $customFieldUpdate)
     {
     }
 
@@ -48,8 +41,7 @@ class ItemController extends AbstractController
      * @param int $id
      * @return Response
      */
-    public
-    function add(Request $request, int $id): Response
+    public function add(Request $request, int $id): Response
     {
         $item = new Item();
         $form = $this->itemFormCreate->create($id, $item);
@@ -68,7 +60,7 @@ class ItemController extends AbstractController
 
     /**
      * @Route("{category_id}/item/edit/{id}", name="item_edit")
-     *
+     * @IsGranted("ROLE_USER")
      * @param Request $request
      * @param int $category_id
      * @param int $id
@@ -110,6 +102,7 @@ class ItemController extends AbstractController
 
     /**
      * @Route("{category_id}/item/delete/{id}", name="item_delete")
+     * @IsGranted("ROLE_USER")
      * @param int $category_id
      * @param int $id
      * @return Response

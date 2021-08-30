@@ -32,7 +32,7 @@ class Like
     /**
      * @ORM\Column(type="boolean")
      */
-    private $isLike;
+    private ?bool $isLike;
 
     public function getId(): ?int
     {
@@ -47,7 +47,6 @@ class Like
     public function setUser(?User $user): self
     {
         $this->user = $user;
-
         return $this;
     }
 
@@ -59,7 +58,6 @@ class Like
     public function setItem(?Item $item): self
     {
         $this->item = $item;
-
         return $this;
     }
 
@@ -71,7 +69,6 @@ class Like
     public function setIsLike(bool $isLike): self
     {
         $this->isLike = $isLike;
-
         return $this;
     }
 }

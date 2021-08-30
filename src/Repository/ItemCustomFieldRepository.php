@@ -19,10 +19,6 @@ class ItemCustomFieldRepository extends ServiceEntityRepository
         parent::__construct($registry, ItemCustomField::class);
     }
 
-    // /**
-    //  * @return ItemCustomField[] Returns an array of ItemCustomField objects
-    //  */
-
     public function findByItemId($value)
     {
         return $this->createQueryBuilder('i')
@@ -33,16 +29,4 @@ class ItemCustomFieldRepository extends ServiceEntityRepository
         ;
     }
 
-
-    /*
-    public function findOneBySomeField($value): ?ItemCustomField
-    {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

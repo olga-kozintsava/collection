@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    public function __construct(private ItemRepository $itemRepository,
+    public function __construct(private ItemRepository     $itemRepository,
                                 private CategoryRepository $categoryRepository)
     {
     }
@@ -24,13 +24,11 @@ class HomeController extends AbstractController
      */
     public function index(AuthenticationUtils $authenticationUtils): Response
     {
-        $lastUser = $authenticationUtils->getLastUsername();
         $lastItems = $this->itemRepository->findByLastAdded();
         $maxItemCategory = $this->categoryRepository->findByMaxItem();
         return $this->render('main/main.html.twig',
             ['lastItems' => $lastItems,
                 'maxItemCategory' => $maxItemCategory
-
             ]
         );
     }

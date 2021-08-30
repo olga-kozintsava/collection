@@ -20,11 +20,6 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-//    // /**
-//    //  * @return Category[] Returns an array of Category objects
-//    //  */
-//    /*
-
     public function findByUserId($value)
     {
         return $this->createQueryBuilder('c')
@@ -34,8 +29,6 @@ class CategoryRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
-
 
     public function findOneById($value): ?Category
     {
@@ -57,13 +50,5 @@ class CategoryRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-
-    //SELECT
-    //    c.category_name, COUNT(p.category_id) AS product_count
-    //FROM
-    //    categories AS c
-    //LEFT JOIN
-    //    products AS p ON p.category_id = c.category_id
 
 }

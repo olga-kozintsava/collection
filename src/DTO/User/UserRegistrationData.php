@@ -17,17 +17,16 @@ class UserRegistrationData
      * @var string
      *
      */
-    public $name;
+    public string $name;
 
     /**
      * @Assert\NotBlank
      * @Assert\Email(mode="strict")
      * @Assert\Type("string")
      *
-     *
      * @var string
      */
-    public $email;
+    public string $email;
 
     /**
      *
@@ -38,5 +37,5 @@ class UserRegistrationData
      * @var string
      *
      */
-    public $password;
+    public string $password;
 }

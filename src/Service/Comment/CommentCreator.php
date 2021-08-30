@@ -20,6 +20,7 @@ class CommentCreator
      *
      * @param $form
      * @param $user
+     * @param $id
      * @return Comment
      */
 

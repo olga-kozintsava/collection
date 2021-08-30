@@ -25,9 +25,7 @@ class Item
      * @Assert\NotBlank
      * @Assert\Type("string")
      */
-    private $title;
-
-
+    private ?string $title;
 
     /**
      * @ORM\Column(type="datetime")
@@ -40,24 +38,23 @@ class Item
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Assert\Valid
      */
-    private $category;
-
+    private ?Category $category;
 
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="item")
      */
-    private $comments;
+    private  $comments;
 
     /**
      * @ORM\OneToMany(targetEntity=Like::class, mappedBy="item")
      */
-    private $likes;
+    private  $likes;
 
     /**
      * @ORM\OneToMany(targetEntity=ItemCustomField::class, mappedBy="item")
      */
-    private $itemCustomFields;
+    private  $itemCustomFields;
 
     /**
      * @ORM\ManyToMany(targetEntity=Tag::class, inversedBy="items", cascade={"persist"})
@@ -94,7 +91,6 @@ class Item
     }
 
 
-
     public function getDate(): ?\DateTimeInterface
     {
         return $this->dateCreate;
@@ -106,7 +102,6 @@ class Item
 
         return $this;
     }
-
 
 
     public function getCategory(): ?Category
@@ -121,10 +116,8 @@ class Item
         return $this;
     }
 
-
-
     /**
-     * @return Collection|Comment[]
+     * @return Collection
      */
     public function getComments(): Collection
     {
@@ -144,17 +137,15 @@ class Item
     public function removeComment(Comment $comment): self
     {
         if ($this->comments->removeElement($comment)) {
-            // set the owning side to null (unless already changed)
             if ($comment->getItem() === $this) {
                 $comment->setItem(null);
             }
         }
-
         return $this;
     }
 
     /**
-     * @return Collection|Like[]
+     * @return Collection
      */
     public function getLikes(): Collection
     {
@@ -174,17 +165,15 @@ class Item
     public function removeLike(Like $like): self
     {
         if ($this->likes->removeElement($like)) {
-            // set the owning side to null (unless already changed)
             if ($like->getItem() === $this) {
                 $like->setItem(null);
             }
         }
-
         return $this;
     }
 
     /**
-     * @return Collection|ItemCustomField[]
+     * @return Collection
      */
     public function getItemCustomFields(): Collection
     {
@@ -197,24 +186,21 @@ class Item
             $this->itemCustomFields[] = $itemCustomField;
             $itemCustomField->setItem($this);
         }
-
         return $this;
     }
 
     public function removeItemCustomField(ItemCustomField $itemCustomField): self
     {
         if ($this->itemCustomFields->removeElement($itemCustomField)) {
-            // set the owning side to null (unless already changed)
             if ($itemCustomField->getItem() === $this) {
                 $itemCustomField->setItem(null);
             }
         }
-
         return $this;
     }
 
     /**
-     * @return Collection|Tag[]
+     * @return Collection
      */
     public function getTag(): Collection
     {
@@ -226,14 +212,12 @@ class Item
         if (!$this->tag->contains($tag)) {
             $this->tag[] = $tag;
         }
-
         return $this;
     }
 
     public function removeTag(Tag $tag): self
     {
         $this->tag->removeElement($tag);
-
         return $this;
     }
 }

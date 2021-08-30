@@ -12,7 +12,6 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 
 class EasyAdminSubscriber implements EventSubscriberInterface
 {
-
     private EntityManagerInterface $entityManager;
     private PasswordHasherInterface $passwordHasher;
 
@@ -30,20 +29,18 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function updateUser(BeforeEntityUpdatedEvent $event)
+    public function updateUser(BeforeEntityUpdatedEvent $event): void
     {
         $entity = $event->getEntityInstance();
-
         if (!($entity instanceof User)) {
             return;
         }
         $this->setPassword($entity);
     }
 
-    public function addUser(BeforeEntityPersistedEvent $event)
+    public function addUser(BeforeEntityPersistedEvent $event): void
     {
         $entity = $event->getEntityInstance();
-
         if (!($entity instanceof User)) {
             return;
         }

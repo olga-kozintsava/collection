@@ -27,7 +27,7 @@ class LikeController extends AbstractController
     public function add(int $item_id): Response
     {
         $user = $this->getUser();
-        $like = $this->likeCheck->check($user, $item_id);
+        $this->likeCheck->check($user, $item_id);
         return $this->redirectToRoute('item_show', ['id' => $item_id]);
     }
 }

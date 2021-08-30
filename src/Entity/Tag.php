@@ -52,7 +52,7 @@ class Tag
     }
 
     /**
-     * @return Collection|Item[]
+     * @return Collection
      */
     public function getItems(): Collection
     {

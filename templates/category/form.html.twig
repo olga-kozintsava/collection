@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+{% block title %}Collection form{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row d-flex justify-content-center" style="margin: 50px">
+            <div class="col-md-6 col-md-offset-6 ">
+                <div class="add_category">
+                    {{ form_start(form) }}
+                    <div>{{ form_label(form.title) }}
+                        {{ form_widget(form.title) }}
+                        {{ form_errors(form.title) }}
+                    </div>
+                    <div>  {{ form_label(form.description) }}
+                        {{ form_widget(form.description) }}
+                        {{ form_errors(form.description) }}
+                    </div>
+                    <div> {{ form_label(form.subject) }}
+                        {{ form_widget(form.subject) }}
+                        {{ form_errors(form.subject) }}
+                    </div>
+                    {{ form_errors(form.customField) }}
+                    <div class="mt-2">
+                        <button type="button" class="add_item_link btn btn-dark" data-collection-holder-class="fields">Add field
+                        </button></div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <ul class="fields" data-prototype="{{ form_widget(form.customField.vars.prototype)|e('html_attr') }}">
+                        </ul>
+                    </div>
+                    <div class="d-flex justify-content-between mt-1">
+                        <div>
+                            <button type="submit" class="btn btn-block btn-dark">{{ button_text }}</button>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        jQuery(document).ready(function () {
+            var $fieldsCollectionHolder = $('ul.fields');
+            $fieldsCollectionHolder.data('index', $fieldsCollectionHolder.find('input').length);
+            $fieldsCollectionHolder.find('li').each(function () {
+                addTagFormDeleteLink($(this))
+            });
+            $('body').on('click', '.add_item_link', function (e) {
+                var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+                addFormToCollection($collectionHolderClass);
+            })
+        });
+
+        function addFormToCollection($collectionHolderClass) {
+
+            var $collectionHolder = $('.' + $collectionHolderClass);
+            var prototype = $collectionHolder.data('prototype');
+            var index = $collectionHolder.data('index');
+            var newForm = prototype;
+            newForm = newForm.replace(/__name__/g, index);
+            $collectionHolder.data('index', index + 1);
+            var $newFormLi = $('<li class="d-inline-flex justify-content-between mt-2"></li>').append(newForm);
+            addTagFormDeleteLink($newFormLi);
+            $collectionHolder.append($newFormLi)
+        }
+
+        function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormButton = $('<button type="button" class="btn btn-dark btn-sm">Delete</button>');
+            $tagFormLi.append($removeFormButton);
+            $removeFormButton.on('click', function (e) {
+                $tagFormLi.remove();
+            });
+        }
+    </script>
+{% endblock %}
